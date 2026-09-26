@@ -2,4 +2,6 @@ ffmpeg
 libcairo2-dev
 libpango1.0-dev
 pkg-config
+fonts-dejavu-core
 python3.12-venv
+fonts-noto-cjk

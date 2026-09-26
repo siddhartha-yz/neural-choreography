@@ -14,7 +14,7 @@
 
 ## 画面里在干什么
 
-1. **半秒 `4.6`**：章节号。
+1. **中文片头（4 秒）**：内容名称、章节号和一句极简讲解。
 2. **散点先停住**。黄、亮蓝、暗蓝是原始分组，不是模型猜的类。
 3. **圈住旅行者**，左侧固定写 \(x_1=1.00\)、\(x_2=0.50\)。这是这个点的坐标，不是权重。
 4. **四根隐单元**从零轴长出来。这一颗的 \(h=\mathrm{ReLU}(W_1x+b_1)=(1.800,\,0.600,\,1.200,\,0.900)\)。
@@ -40,4 +40,4 @@
 
 《动手学深度学习》4.6：https://zh.d2l.ai/chapter_multilayer-perceptrons/dropout.html
 
-圈住的样本会在后面几集再出现。源码与成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/04.6
+圈住的样本会在后面几集再出现。源码与成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/04.6

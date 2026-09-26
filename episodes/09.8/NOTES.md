@@ -14,7 +14,7 @@
 
 ## 画面里在干什么
 
-1. **半秒 `9.8`**：章节号。
+1. **中文片头（4 秒）**：内容名称、章节号和一句极简讲解。
 2. **两棵空树**：根是上下文 \(c\)。公式 \(Y\leftarrow\mathrm{topk}_k(Y\times V)\) 只出现一次。
 3. **\(t=1\) 三个词**：词表只有 A、B、C。两边分数相同，来自同一组 softmax：\(P(A\mid c)=0.524\)、\(P(B\mid c)=0.437\)、\(P(C\mid c)=0.039\)。
 4. **剪枝**：\(k=1\) 只留 A，B 和 C 变暗。\(k=2\) 留 A 和 B，只剪掉 C。
@@ -40,4 +40,4 @@
 
 《动手学深度学习》9.8：https://zh.d2l.ai/chapter_recurrent-modern/beam-search.html
 
-源码与成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/09.8
+源码与成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/09.8

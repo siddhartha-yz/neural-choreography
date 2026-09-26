@@ -38,4 +38,4 @@ NOTES 点名、须在画面上对得上的数：6.5、3、4
 刻意没演：填充、非正方形窗口、多通道、把汇聚写成特殊卷积。步幅固定为 2，所以输出正好是 2×2。权重是没有的：汇聚层不训练。
 片内禁止中文句子。没有旁白。只有符号、维数、正在变化的数，以及半秒章节号。
 
-成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/06.5
+成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/06.5

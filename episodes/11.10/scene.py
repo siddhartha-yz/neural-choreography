@@ -10,6 +10,7 @@ then steps. Numpy is the only arithmetic.
 from __future__ import annotations
 
 import numpy as np
+from scripts.episode_intro import show_episode_intro
 from manim import (
     BLACK,
     BLUE_A,
@@ -36,9 +37,6 @@ from manim import (
 )
 
 
-config.pixel_width = 1920
-config.pixel_height = 1080
-config.frame_rate = 60
 config.background_color = BLACK
 
 
@@ -272,10 +270,7 @@ class Episode1110(Scene):
             )
         )
 
-        chapter_mark = Text("11.10", font_size=66, color=WHITE)
-        self.add(chapter_mark)
-        self.wait(0.24)
-        self.play(FadeOut(chapter_mark), run_time=0.16, rate_func=linear)
+        show_episode_intro(self, "11.10")
 
         opacities = (0.82, 0.68, 0.52, 0.38, 0.28)
         contours = VGroup(

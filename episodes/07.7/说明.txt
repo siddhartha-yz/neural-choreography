@@ -59,4 +59,4 @@ NOTES 点名、须在画面上对得上的数：7.7、0.76、0.39、0.48、0.62�
 刻意没演：批量规范化、3×3 卷积、过渡层压通道、整座 DenseNet、训练。上一集是 7.6 ResNet：那边是加回来，这边是拼上去。
 片内禁止中文句子。没有旁白。只有符号、维数、正在变化的数，以及半秒章节号。
 
-成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/07.7
+成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/07.7

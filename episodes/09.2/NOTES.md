@@ -12,7 +12,7 @@ RNN 的隐状态每一步都被整段改写，走远了就记不住。LSTM 多�
 
 ## 画面里在干什么
 
-1. **半秒 `9.2`**：章节号。
+1. **中文片头（4 秒）**：内容名称、章节号和一句极简讲解。
 2. **水库先停住**。盒子是 \(\mathbf{C}\)。这一拍开始之前已经是 \(C=(1.50,\,1.10)\)。
 3. **圈住旅行者** \(x_t=(1.00,\,0.50)\)。公式只写一次：\(C_t=F_t\odot C_{t-1}+I_t\odot\tilde C_t\)。
 4. **遗忘**：\(F=(0.20,\,0.90)\)。蓝针几乎抽干，黄针几乎留下。
@@ -36,4 +36,4 @@ GRU、训练、从零实现、时光机器语料。门的仿射权重不摊开�
 
 《动手学深度学习》9.2：https://zh.d2l.ai/chapter_recurrent-modern/lstm.html
 
-圈住的样本会在后面几集再出现。源码与成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/09.2
+圈住的样本会在后面几集再出现。源码与成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/09.2

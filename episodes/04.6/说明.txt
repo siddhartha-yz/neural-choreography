@@ -32,4 +32,4 @@ NOTES 点名、须在画面上对得上的数：4.6、1.00、0.50、1.800、0.60
 刻意没演：训练权重、输出层、反向传播、inverted dropout 的训练缩放。
 片内禁止中文句子。没有旁白。只有符号、维数、正在变化的数，以及半秒章节号。
 
-成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/04.6
+成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/04.6

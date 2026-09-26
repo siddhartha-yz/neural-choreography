@@ -8,6 +8,7 @@ The kernel is never trained. Output shape is always
 from __future__ import annotations
 
 import numpy as np
+from scripts.episode_intro import show_episode_intro
 from manim import (
     BLACK,
     BLUE,
@@ -36,9 +37,6 @@ from manim import (
 )
 
 
-config.pixel_width = 1920
-config.pixel_height = 1080
-config.frame_rate = 60
 config.background_color = BLACK
 
 
@@ -396,11 +394,8 @@ class Episode063(Scene):
         map_arrow.set_stroke(BLUE_D, width=2.2, opacity=0.72)
         map_arrow.set_fill(opacity=0.0)
 
-        # 0.00–0.40 s: chapter mark only.
-        chapter_mark = Text("6.3", font_size=66, color=WHITE)
-        self.add(chapter_mark)
-        self.wait(0.24)
-        self.play(FadeOut(chapter_mark), run_time=0.16, rate_func=linear)
+        # 4-second Chinese title and explanation; later timing comments refer to the original cut.
+        show_episode_intro(self, "06.3")
 
         # 0.40–1.40 s: the real 3 × 3 input, with n on that lattice.
         self.play(

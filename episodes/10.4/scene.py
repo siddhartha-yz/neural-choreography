@@ -8,6 +8,7 @@ the halo traveler is the decoder query s. Untrained. Tiny 3×2 sequence.
 from __future__ import annotations
 
 import numpy as np
+from scripts.episode_intro import show_episode_intro
 from manim import (
     BLACK,
     BLUE,
@@ -37,9 +38,6 @@ from manim import (
 from manim.utils.color import interpolate_color
 
 
-config.pixel_width = 1920
-config.pixel_height = 1080
-config.frame_rate = 60
 config.background_color = BLACK
 
 
@@ -211,11 +209,8 @@ class Episode104(Scene):
             x_value = (1.0 - amount) * self.enc_xs[0] + amount * self.enc_xs[2]
             return np.array([x_value, self.path_y, 0.0])
 
-        # 0.00–0.40 s: chapter mark only.
-        chapter_mark = Text("10.4", font_size=66, color=WHITE)
-        self.add(chapter_mark)
-        self.wait(0.24)
-        self.play(FadeOut(chapter_mark), run_time=0.16, rate_func=linear)
+        # 4-second Chinese title and explanation; later timing comments refer to the original cut.
+        show_episode_intro(self, "10.4")
 
         enc_boxes = VGroup(
             *[

@@ -37,4 +37,4 @@ NOTES 点名、须在画面上对得上的数：10.6、1.00、0.50、0.212、0.2
 刻意没演：训练、多头、W_q,W_k,W_v、CNN/RNN 复杂度对比、正弦位置编码。教材后半是 X+P；四个点再加相位会把 hat y 和热图挤在一起，这一集不演。
 片内禁止中文句子。没有旁白。只有符号、维数、正在变化的数，以及半秒章节号。
 
-成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/10.6
+成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/10.6

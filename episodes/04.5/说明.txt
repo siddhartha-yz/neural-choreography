@@ -22,4 +22,4 @@ NOTES 点名、须在画面上对得上的数：4.5、0.55、-0.085、0.290、-0
 刻意没演：小批量 SGD 逐步衰减、L_1 / lasso、验证集选 λ、神经网络层里的权重衰减。片里是多项式岭回归的闭式解，用来把「罚 ||w||^2 → 曲线变光滑 → 留出点更近」这一件看清。
 片内禁止中文句子。没有旁白。只有符号、维数、正在变化的数，以及半秒章节号。
 
-成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/04.5
+成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/04.5

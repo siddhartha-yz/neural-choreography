@@ -25,4 +25,4 @@ NOTES 点名、须在画面上对得上的数：5.1、1.00、0.50、-1.00、1.50
 刻意没演：自定义 NestMLP 嵌套、FixedHiddenMLP 的 while 循环、参数访问、延后初始化。那些是 5.2 以后的工程。
 片内禁止中文句子。没有旁白。只有符号、维数、正在变化的数，以及半秒章节号。
 
-成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/05.1
+成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/05.1

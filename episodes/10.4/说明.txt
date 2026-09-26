@@ -31,4 +31,4 @@ NOTES 点名、须在画面上对得上的数：10.4、1.20、0.20、0.35、0.95
 刻意没演：双向编码器、训练、把上下文再送进 GRU 解码器的完整一步、注意力热图。加性评分的矩阵不摊开。上一集若走 10.3，已经看过 a(q,k) 怎么变成权重。
 片内禁止中文句子。没有旁白。只有符号、维数、正在变化的数，以及半秒章节号。
 
-成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/10.4
+成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/10.4

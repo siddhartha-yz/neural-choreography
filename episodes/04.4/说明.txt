@@ -24,4 +24,4 @@ NOTES 点名、须在画面上对得上的数：4.4、1.40、0.45、3.1、+1.20�
 刻意没演：权重衰减、训练动画、右侧「阶数 ×损失」对照表。
 片内禁止中文句子。没有旁白。只有符号、维数、正在变化的数，以及半秒章节号。
 
-成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/04.4
+成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/04.4

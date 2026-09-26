@@ -23,4 +23,4 @@ NOTES 点名、须在画面上对得上的数：4.8、1.00、0.50、0.988、0.98
 刻意没演：训练、梯度爆炸、对称性、Xavier 公式、把 W 摊开、ReLU。教材后半是初始化启发式；这一集只把「饱和 → 反向消失」做成几何。tanh 同理。
 片内禁止中文句子。没有旁白。只有符号、维数、正在变化的数，以及半秒章节号。
 
-成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/04.8
+成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/04.8

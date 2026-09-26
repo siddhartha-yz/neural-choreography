@@ -8,6 +8,7 @@ enters F.  y = relu(F(x) + x).  When F(x) is small, y stays next to x.
 from __future__ import annotations
 
 import numpy as np
+from scripts.episode_intro import show_episode_intro
 from manim import (
     BLACK,
     BLUE,
@@ -39,9 +40,6 @@ from manim import (
 )
 
 
-config.pixel_width = 1920
-config.pixel_height = 1080
-config.frame_rate = 60
 config.background_color = BLACK
 
 
@@ -173,11 +171,8 @@ class Episode076(Scene):
             )
         )
 
-        # 0.00–0.40 s: chapter mark only.
-        chapter_mark = Text("7.6", font_size=66, color=WHITE)
-        self.add(chapter_mark)
-        self.wait(0.24)
-        self.play(FadeOut(chapter_mark), run_time=0.16, rate_func=linear)
+        # 4-second Chinese title and explanation; later timing comments refer to the original cut.
+        show_episode_intro(self, "07.6")
 
         grid, axes = self.make_grid_and_axes()
         class_points = (
@@ -197,19 +192,20 @@ class Episode076(Scene):
         traveler_center = self.plot_point(x_flat[0], x_flat[1])
         halo_outer = Circle(radius=0.265).move_to(traveler_center).set_stroke(BLUE_A, width=2.1, opacity=0.48)
         halo_inner = Circle(radius=0.172).move_to(traveler_center).set_stroke(YELLOW, width=2.8, opacity=0.98)
-        sample_x1_label = Text("x₁ = 1.00", font_size=22, color=BLUE_A).move_to(np.array([-6.48, -1.42, 0.0]))
-        sample_x2_label = Text("x₂ = 0.50", font_size=22, color=BLUE_A).move_to(np.array([-6.48, -1.85, 0.0]))
-        # Same left pocket as x, not on the cloud: y ≈ x is the residual punchline.
+        sample_x1_label = Text("x₁ = 1.00", font_size=22, color=BLUE_A).move_to(np.array([-5.00, -3.10, 0.0]))
+        sample_x2_label = Text("x₂ = 0.50", font_size=22, color=BLUE_A).move_to(np.array([-5.00, -3.55, 0.0]))
+        # Two columns below the plot keep signed readouts inside the frame.
+        # y ≈ x is the residual punchline.
         y1_on_traveler = Text(
             f"y₁ = {signed_glyphs(y_flat[0])}",
             font_size=22,
             color=YELLOW,
-        ).move_to(np.array([-6.48, -2.36, 0.0]))
+        ).move_to(np.array([-2.70, -3.10, 0.0]))
         y2_on_traveler = Text(
             f"y₂ = {signed_glyphs(y_flat[1])}",
             font_size=22,
             color=YELLOW,
-        ).move_to(np.array([-6.48, -2.79, 0.0]))
+        ).move_to(np.array([-2.70, -3.55, 0.0]))
 
         formula = Text("y = relu(F(x) + x)", font_size=34, color=WHITE).move_to(np.array([3.55, 3.14, 0.0]))
 

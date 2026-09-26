@@ -7,6 +7,7 @@ This is forward computation only: the kernels are not trained.
 from __future__ import annotations
 
 import numpy as np
+from scripts.episode_intro import show_episode_intro
 from manim import (
     BLACK,
     BLUE,
@@ -35,9 +36,6 @@ from manim import (
 )
 
 
-config.pixel_width = 1920
-config.pixel_height = 1080
-config.frame_rate = 60
 config.background_color = BLACK
 
 
@@ -198,11 +196,8 @@ class Episode064(Scene):
             )
         )
 
-        # 0.00–0.40 s: chapter mark only.
-        chapter_mark = Text("6.4", font_size=66, color=WHITE)
-        self.add(chapter_mark)
-        self.wait(0.24)
-        self.play(FadeOut(chapter_mark), run_time=0.16, rate_func=linear)
+        # 4-second Chinese title and explanation; later timing comments refer to the original cut.
+        show_episode_intro(self, "06.4")
 
         x_squares: list[list[list[Square]]] = []
         x_labels: list[list[list[Text]]] = []

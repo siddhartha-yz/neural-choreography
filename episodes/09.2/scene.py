@@ -9,6 +9,7 @@ dashboard of weight matrices.
 from __future__ import annotations
 
 import numpy as np
+from scripts.episode_intro import show_episode_intro
 from manim import (
     BLACK,
     BLUE,
@@ -37,9 +38,6 @@ from manim import (
 )
 
 
-config.pixel_width = 1920
-config.pixel_height = 1080
-config.frame_rate = 60
 config.background_color = BLACK
 
 
@@ -204,11 +202,8 @@ class Episode092(Scene):
         kept1 = STEP1["F"] * CELL_0
         kept2 = STEP2["F"] * STEP1["C"]
 
-        # 0.00–0.40 s: chapter mark only.
-        chapter_mark = Text("9.2", font_size=66, color=WHITE)
-        self.add(chapter_mark)
-        self.wait(0.24)
-        self.play(FadeOut(chapter_mark), run_time=0.16, rate_func=linear)
+        # 4-second Chinese title and explanation; later timing comments refer to the original cut.
+        show_episode_intro(self, "09.2")
 
         cell = self.stroke_rect(self.cell_w, self.cell_h, self.cell_c, BLUE_A, 3.2)
         cell_name = Text("C", font_size=30, color=BLUE_A).move_to(

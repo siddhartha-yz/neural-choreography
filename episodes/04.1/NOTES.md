@@ -12,7 +12,7 @@
 
 ## 画面里在干什么
 
-1. **半秒 `4.1`**：章节号。
+1. **中文片头（4 秒）**：内容名称、章节号和一句极简讲解。
 2. **两类点先停住**。亮蓝、黄是原始分组。
 3. **圈住旅行者**，左侧固定写 \(x_1=0.80\)、\(x_2=0.60\)。这是这个点的坐标，不是权重。
 4. **\(z=W_1x+b_1\)**：两根针按组上色。这一颗的预激活是 \(z_1=+1.200\)、\(z_2=-0.800\)。黄针朝下，就是「隐层输入可负」。
@@ -35,4 +35,4 @@
 
 《动手学深度学习》4.1：https://zh.d2l.ai/chapter_multilayer-perceptrons/mlp.html
 
-圈住的样本会在后面几集再出现。源码与成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/04.1
+圈住的样本会在后面几集再出现。源码与成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/04.1

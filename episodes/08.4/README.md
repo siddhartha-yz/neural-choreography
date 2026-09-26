@@ -1,14 +1,9 @@
-# 8.4 循环神经网络
+# 08.4 循环神经网络
 
-机制：同一个隐状态 \(h_t=\phi(W_{xh}x_t+W_{hh}h_{t-1}+b)\) 被三个 token 依次改写，旧的 \(h\) 留下淡影与轨迹。光晕在当前 \(x_t\) 上。不训练，不演输出层，不演 BPTT。
-
-片外说明（不进视频）：[NOTES.md](NOTES.md)
-
-D2L：https://zh.d2l.ai/chapter_recurrent-neural-networks/rnn.html
+当前方向是 [连续动画作品](../../docs/CREATIVE_PRINCIPLES.md)，08.4、08.7、09.1、09.2 正在进行串联试作，见 [制作说明](../../docs/CONTINUOUS_STUDY.md)。
 
 ```bash
-.venv/bin/manim episodes/08.4/scene.py Episode084 \
-  -r 1920,1080 --fps 60 --format mp4
+python -m scripts.render_continuous --profile final --output media/continuous-study/video.mp4
 ```
 
-成片约 32 秒，H.264，无音轨。MP4 放 GitHub Release，不进 Git。
+独立单集入口仍为上一轮网格样片 `zanim_scenes/rnn_flow.py`；串联样片实现为 `zanim_scenes/continuous.py`。[教学分镜](STORYBOARD.md) 已撤回。

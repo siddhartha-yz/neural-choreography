@@ -12,7 +12,7 @@
 
 ## 画面里在干什么
 
-1. **半秒 `5.1`**：章节号。
+1. **中文片头（4 秒）**：内容名称、章节号和一句极简讲解。
 2. **先画出外盒** `Sequential`，再在里面画出三只更小的盒子：\(W_1x+b_1\)、`relu`、\(W_2h+b_2\)。层套进块。
 3. **圈住旅行者**，左侧固定写 \(x_1=1.00\)、\(x_2=0.50\)。这是这个点走进块之前的坐标。
 4. **走进第一只内盒**：隐层从 2 维被写成 3 维。中间那根黄针朝下，是 \(z_2=-1.00\)，仿射结果可负。
@@ -35,4 +35,4 @@
 
 《动手学深度学习》5.1：https://zh.d2l.ai/chapter_deep-learning-computation/model-construction.html
 
-圈住的样本会在后面几集再出现。源码与成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/05.1
+圈住的样本会在后面几集再出现。源码与成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/05.1

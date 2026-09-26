@@ -14,7 +14,7 @@
 
 ## 画面里在干什么
 
-1. **半秒 `4.5`**：章节号。
+1. **中文片头（4 秒）**：内容名称、章节号和一句极简讲解。
 2. **训练点先停住**。真实关系接近 \(y=0.55x-0.085x^3\)，再加噪声。中间空了一截，留给旅行者。
 3. **圈住旅行者**，左侧固定写 \(x=0.55\)、\(y=0.290\)。这两个数是这个点的坐标，不是权重。它不在那十个训练点里。
 4. **\(\lambda=0\) 的九次曲线进来**。它穿过每个训练点，在空档里扎下去。线上的黄点是此刻对这个 \(x\) 的 \(\hat{y}\)；竖线段是留出残差 \(r=\hat{y}-y\)。屏幕上 \(\hat{y}=-0.834\)，\(r\approx -1.124\)，\(\|\mathbf{w}\|=5.281\)（不含截距）。
@@ -37,4 +37,4 @@
 
 《动手学深度学习》4.5：https://zh.d2l.ai/chapter_multilayer-perceptrons/weight-decay.html
 
-圈住的样本是留出点，不进拟合。源码与成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/04.5
+圈住的样本是留出点，不进拟合。源码与成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/04.5

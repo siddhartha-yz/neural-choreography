@@ -27,4 +27,4 @@ NOTES 点名、须在画面上对得上的数：9.4、1.00、0.50、-0.80、0.60
 刻意没演：输出层 O_t=H_t W_h q+b_q、训练、拿双向网当语言模型（书里 9.4.3 的反例：time travellerererere）。
 片内禁止中文句子。没有旁白。只有符号、维数、正在变化的数，以及半秒章节号。
 
-成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/09.4
+成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/09.4

@@ -14,7 +14,7 @@
 
 ## 画面里在干什么
 
-1. **半秒 `6.2`**：章节号。
+1. **中文片头（4 秒）**：内容名称、章节号和一句极简讲解。
 2. **输入 \(X\)**（4×4）先停住，格子里是数。
 3. **核 \(K\)**（3×3）出现在中间。权重不训练。
 4. **空的 \(2\times 2\) 输出 \(O\)** 和公式 \(o=(X * K)\)。底下两格一直空着：不把整张特征图当仪表盘。
@@ -47,4 +47,4 @@ O=\begin{bmatrix}26&34\\48&46\end{bmatrix}
 
 《动手学深度学习》6.2：https://zh.d2l.ai/chapter_convolutional-neural-networks/conv-layer.html
 
-圈住的是正在写入的输出格。源码与成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/06.2
+圈住的是正在写入的输出格。源码与成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/06.2

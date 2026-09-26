@@ -25,4 +25,4 @@ NOTES 点名、须在画面上对得上的数：13.3、0.50、0.30、2.10、1.50
 刻意没演：猫狗图、锚框、交并比、非极大值抑制。
 片内禁止中文句子。没有旁白。只有符号、维数、正在变化的数，以及半秒章节号。
 
-成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/13.3
+成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/13.3

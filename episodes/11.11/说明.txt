@@ -29,4 +29,4 @@ NOTES 点名、须在画面上对得上的数：11.11、0.18、0.02、0.03、11.
 刻意没演：平方根调度、因子调度、多段常数表、在 Fashion-MNIST 上训练、和恒定 η 并排对照。那些是书里的菜单；片里只把「同一条下降路上 η 按计划先热再冷」做成几何。
 片内禁止中文句子。没有旁白。只有符号、维数、正在变化的数，以及半秒章节号。
 
-成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/11.11
+成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/11.11

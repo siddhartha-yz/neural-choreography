@@ -12,7 +12,7 @@
 
 ## 画面里在干什么
 
-1. **半秒 `7.7`**：章节号。
+1. **中文片头（4 秒）**：内容名称、章节号和一句极简讲解。
 2. **两张输入图** \(x_0,x_1\) 先停住。格子上的数来自同一份 numpy。
 3. **黄框光晕圈住整叠**，左下固定口袋写 \(C=2\)。
 4. **公式出现一次**：\(x\leftarrow[x,f(x)]\)。右上盒子是 \(f\)，正交折线从光晕右上角接到盒子，不穿过标题。
@@ -42,4 +42,4 @@
 
 《动手学深度学习》7.7：https://zh.d2l.ai/chapter_convolutional-modern/densenet.html
 
-圈住的样本会在后面几集再出现。源码与成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/07.7
+圈住的样本会在后面几集再出现。源码与成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/07.7

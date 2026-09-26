@@ -14,7 +14,7 @@
 
 ## 画面里在干什么
 
-1. **半秒 `7.5`**：章节号。
+1. **中文片头（4 秒）**：内容名称、章节号和一句极简讲解。
 2. **五根针**：原始特征 \(x=(0.400,\,1.200,\,2.000,\,2.800,\,3.600)\)。光晕那根是旅行者，高度正好是这批的均值。
 3. **公式只写一次** \(y=\gamma((x-\mu)/\sigma)+\beta\)。黄线标 \(\mu=2.000\)，穿过旅行者的针尖。
 4. **减均值**：五根一起往下掉 \(\mu\)。旅行者落到 0；有的针穿到零轴下面，就是「减完以后可负」。
@@ -38,4 +38,4 @@
 
 《动手学深度学习》7.5：https://zh.d2l.ai/chapter_convolutional-modern/batch-norm.html
 
-圈住的样本会在后面几集再出现。源码与成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/07.5
+圈住的样本会在后面几集再出现。源码与成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/07.5

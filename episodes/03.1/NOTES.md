@@ -14,7 +14,7 @@
 
 ## 画面里在干什么
 
-1. **半秒 `3.1`**：章节号。
+1. **中文片头（4 秒）**：内容名称、章节号和一句极简讲解。
 2. **散点先停住**：真实关系是 \(y=1.15x+0.55\)，再加噪声。即使用对了斜线，点也不会全贴在线上。
 3. **圈住旅行者**，左侧固定写 \(x\) 和 \(y\)。这两个数是这个点的坐标，不是权重。
 4. **一条错线进来**。线上的黄点是 \(\hat{y}=wx+b\) 此刻对这个 \(x\) 的预测；竖线段是残差 \(r=\hat{y}-y\)。
@@ -37,4 +37,4 @@
 
 《动手学深度学习》3.1：https://zh.d2l.ai/chapter_linear-networks/linear-regression.html
 
-片里是真实的小批量 SGD。圈住的样本会在后面几集再出现。源码与成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/03.1
+片里是真实的小批量 SGD。圈住的样本会在后面几集再出现。源码与成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/03.1

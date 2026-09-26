@@ -51,4 +51,4 @@ NOTES 点名、须在画面上对得上的数：6.4、19、37、76
 刻意没演：1×1 卷积、训练、把通道海报画成 RGB。核是写死的，不是学来的。旅行者只是视觉身份：它是输出格，不是 3.1 那颗带标签的点。
 片内禁止中文句子。没有旁白。只有符号、维数、正在变化的数，以及半秒章节号。
 
-成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/06.4
+成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/06.4

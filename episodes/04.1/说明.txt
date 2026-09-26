@@ -24,4 +24,4 @@ NOTES 点名、须在画面上对得上的数：4.1、0.80、0.60、+1.200、-0.
 刻意没演：训练、反向传播、softmax、交叉熵。权重是写死的 2×2 矩阵，不是学来的。旅行者只是视觉身份，不是 3.1 那组带标签的点。
 片内禁止中文句子。没有旁白。只有符号、维数、正在变化的数，以及半秒章节号。
 
-成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/04.1
+成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/04.1

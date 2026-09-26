@@ -14,7 +14,7 @@
 
 ## 画面里在干什么
 
-1. **半秒 `10.2`**：章节号。
+1. **中文片头（4 秒）**：内容名称、章节号和一句极简讲解。
 2. **训练点先停住**。键是 1-D 的 \(x\)，值是 \(y\)。真实关系是 \(2\sin x+x^{0.8}\)，再加噪声。九点。
 3. **圈住查询**。旅行者坐在横轴上，左侧固定写 \(q\)。这是查询，不是某个训练点的坐标。
 4. **针长在点上**：\(\alpha_i=\mathrm{softmax}(-\frac12\|q-k_i\|^2)\)。\(q=1.00\) 时最近的键 \(k=0.90\) 最亮，\(\alpha=0.247\)。右边几乎不亮。
@@ -37,4 +37,4 @@
 
 《动手学深度学习》10.2：https://zh.d2l.ai/chapter_attention-mechanisms/nadaraya-waston.html
 
-圈住的样本会在后面几集再出现。源码与成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/10.2
+圈住的样本会在后面几集再出现。源码与成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/10.2

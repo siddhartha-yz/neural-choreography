@@ -23,4 +23,4 @@ NOTES 点名、须在画面上对得上的数：7.5、0.400、1.200、2.000、2.
 刻意没演：训练 γ,β、移动平均、预测模式、卷积通道上的 m· p· q、ε 垫底。
 片内禁止中文句子。没有旁白。只有符号、维数、正在变化的数，以及半秒章节号。
 
-成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/07.5
+成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/07.5

@@ -8,6 +8,7 @@ is the same h, updated in place, with a faint trail of previous h left behind.
 from __future__ import annotations
 
 import numpy as np
+from scripts.episode_intro import show_episode_intro
 from manim import (
     BLACK,
     BLUE,
@@ -36,9 +37,6 @@ from manim import (
 )
 
 
-config.pixel_width = 1920
-config.pixel_height = 1080
-config.frame_rate = 60
 config.background_color = BLACK
 
 
@@ -201,11 +199,8 @@ class Episode084(Scene):
             )
         )
 
-        # 0.00–0.40 s: chapter mark only.
-        chapter_mark = Text("8.4", font_size=66, color=WHITE)
-        self.add(chapter_mark)
-        self.wait(0.24)
-        self.play(FadeOut(chapter_mark), run_time=0.16, rate_func=linear)
+        # 4-second Chinese title and explanation; later timing comments refer to the original cut.
+        show_episode_intro(self, "08.4")
 
         token_grid, token_axes = self.make_token_grid()
         hidden_grid, hidden_axes = self.make_hidden_grid()
@@ -274,7 +269,7 @@ class Episode084(Scene):
             np.array([3.40, 3.22, 0.0])
         )
 
-        def make_component_row(label: str, y_position: float) -> tuple[VGroup, DecimalNumber]:
+        def make_component_row(label: str, x_position: float) -> tuple[VGroup, DecimalNumber]:
             prefix = Text(label, font_size=21, color=BLUE_A)
             number = DecimalNumber(
                 0.0,
@@ -285,12 +280,12 @@ class Episode084(Scene):
                 font_size=21,
             )
             row = VGroup(prefix, number).arrange(np.array([1.0, 0.0, 0.0]), buff=0.08).move_to(
-                np.array([-6.52, y_position, 0.0])
+                np.array([x_position, -3.30, 0.0])
             )
             return row, number
 
-        token_row_1, token_number_1 = make_component_row("x₁ =", -1.72)
-        token_row_2, token_number_2 = make_component_row("x₂ =", -2.14)
+        token_row_1, token_number_1 = make_component_row("x₁ =", -4.90)
+        token_row_2, token_number_2 = make_component_row("x₂ =", -2.35)
         token_number_1.set_value(token_first.get_value())
         token_number_2.set_value(token_second.get_value())
         token_number_1.add_updater(lambda number: number.set_value(token_first.get_value()))

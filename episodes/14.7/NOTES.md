@@ -20,7 +20,7 @@
 
 ## 画面里在干什么
 
-1. **半秒 `14.7`**：章节号。
+1. **中文片头（4 秒）**：内容名称、章节号和一句极简讲解。
 2. **描边坐标格**，轴上是 \(x_1,x_2\)。二维，所以平行四边形能画在纸上。
 3. **四个词元**：man、woman、king、queen。蓝与白是身份，不是「男/女」两类。
 4. **公式只出现一次**：`king − man + woman ≈ queen`。
@@ -56,4 +56,4 @@ king 减 man 加 woman，平行四边形落在 queen 旁边。没有旁白。
 
 《动手学深度学习》14.7：https://zh.d2l.ai/chapter_natural-language-processing-pretraining/similarity-analogy.html
 
-圈住的是合成向量。源码与成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/14.7
+圈住的是合成向量。源码与成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/14.7

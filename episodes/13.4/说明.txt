@@ -29,4 +29,4 @@ NOTES 点名、须在画面上对得上的数：13.4、0.4、0.50、0.25、0.217
 刻意没演：每个像素都铺一遍、标注正负锚、偏移量回归、非极大值抑制。
 片内禁止中文句子。没有旁白。只有符号、维数、正在变化的数，以及半秒章节号。
 
-成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/13.4
+成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/13.4

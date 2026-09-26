@@ -29,4 +29,4 @@ NOTES 点名、须在画面上对得上的数：14.1、+0.00、0.22、+2.18、-1
 刻意没演：CBOW、负采样、层次 softmax、整张词表、预训练好的 embedding。14.7 才是类比平行四边形。
 片内禁止中文句子。没有旁白。只有符号、维数、正在变化的数，以及半秒章节号。
 
-成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/14.1
+成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/14.1

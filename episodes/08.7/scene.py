@@ -8,6 +8,7 @@ forward/backward computation, not a training animation.
 from __future__ import annotations
 
 import numpy as np
+from scripts.episode_intro import show_episode_intro
 from manim import (
     AnimationGroup,
     Arrow,
@@ -45,9 +46,6 @@ from manim import (
 )
 
 
-config.pixel_width = 1920
-config.pixel_height = 1080
-config.frame_rate = 60
 config.background_color = BLACK
 
 
@@ -116,10 +114,7 @@ class Episode087(Scene):
         )
 
         # 0.00–0.50 s — chapter mark only.
-        chapter_mark = Text("8.7", font_size=66, color=WHITE)
-        self.add(chapter_mark)
-        self.wait(0.30)
-        self.play(FadeOut(chapter_mark), run_time=0.20, rate_func=linear)
+        show_episode_intro(self, "08.7")
 
         hidden_centers = [np.array([x_position, self.hidden_y, 0.0]) for x_position in self.chain_x]
         input_centers = [np.array([x_position, self.input_y, 0.0]) for x_position in self.chain_x]

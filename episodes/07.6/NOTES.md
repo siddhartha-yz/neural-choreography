@@ -12,7 +12,7 @@
 
 ## 画面里在干什么
 
-1. **半秒 `7.6`**：章节号。
+1. **中文片头（4 秒）**：内容名称、章节号和一句极简讲解。
 2. **点云先停住**。黄、亮蓝是原始分组。
 3. **圈住旅行者**，左侧固定写 \(x_1=1.00\)、\(x_2=0.50\)。
 4. **公式出现一次**：\(y=\mathrm{relu}(F(x)+x)\)。盒子 \(F\) 里是两段仿射 \(W_1\to\mathrm{relu}\to W_2\)。
@@ -39,4 +39,4 @@
 
 《动手学深度学习》7.6：https://zh.d2l.ai/chapter_convolutional-modern/resnet.html
 
-圈住的样本会在后面几集再出现。源码与成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/07.6
+圈住的样本会在后面几集再出现。源码与成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/07.6

@@ -12,7 +12,7 @@
 
 ## 画面里在干什么
 
-1. **半秒 `9.4`**：章节号。
+1. **中文片头（4 秒）**：内容名称、章节号和一句极简讲解。
 2. **四个词元先停住**。蓝黄只是点的身份。数是 \(x=(1.00,\,0.50,\,-0.80,\,0.60)\)。上面那条零轴标 `→`，下面那条标 `←`。
 3. **公式出现一次**：\(H_t=[\overrightarrow h_t,\,\overleftarrow h_t]\)。先写公式，针还没长。
 4. **左到右**：\(\overrightarrow h_t=\tanh(W_{xh}^{(f)}x_t+W_{hh}^{(f)}\overrightarrow h_{t-1}+b_h^{(f)})\)。四步，每步约两秒。这一条是 \(+0.782,\,+0.671,\,-0.579,\,+0.361\)。第三根朝下，因为这个 \(x\) 是负的。
@@ -35,4 +35,4 @@
 
 《动手学深度学习》9.4：https://zh.d2l.ai/chapter_recurrent-modern/bi-rnn.html
 
-圈住的是拼接后的隐状态。源码与成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/09.4
+圈住的是拼接后的隐状态。源码与成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/09.4

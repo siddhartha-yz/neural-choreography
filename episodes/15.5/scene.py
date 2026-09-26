@@ -8,6 +8,7 @@ inference is softmax of a 3-vector built from a·β and ||a−β||. Nothing is t
 from __future__ import annotations
 
 import numpy as np
+from scripts.episode_intro import show_episode_intro
 from manim import (
     BLACK,
     BLUE,
@@ -38,9 +39,6 @@ from manim import (
 )
 
 
-config.pixel_width = 1920
-config.pixel_height = 1080
-config.frame_rate = 60
 config.background_color = BLACK
 
 
@@ -182,11 +180,8 @@ class Episode155(Scene):
             )
         )
 
-        # 0.00–0.40 s: chapter mark only.
-        chapter_mark = Text("15.5", font_size=66, color=WHITE)
-        self.add(chapter_mark)
-        self.wait(0.24)
-        self.play(FadeOut(chapter_mark), run_time=0.16, rate_func=linear)
+        # 4-second Chinese title and explanation; later timing comments refer to the original cut.
+        show_episode_intro(self, "15.5")
 
         grid, axes = self.make_grid_and_axes()
         premise_dots = [

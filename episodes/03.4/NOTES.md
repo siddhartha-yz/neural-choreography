@@ -14,7 +14,7 @@
 
 ## 画面里在干什么
 
-1. **半秒 `3.4`**：章节号。
+1. **中文片头（4 秒）**：内容名称、章节号和一句极简讲解。
 2. **三类点先停住**。黄、亮蓝、暗蓝是原始分组。
 3. **圈住旅行者**，左侧固定写 \(x_1=1.00\)、\(x_2=0.50\)。这是这个点的坐标，不是权重。
 4. **\(o=Wx+b\)**：三根针按组上色。这一颗的分数是 \(o_1=+1.660\)、\(o_2=-0.770\)、\(o_3=+0.700\)。中间那根朝下，就是「logit 可负」。
@@ -37,4 +37,4 @@
 
 《动手学深度学习》3.4：https://zh.d2l.ai/chapter_linear-networks/softmax-regression.html
 
-圈住的样本会在后面几集再出现。源码与成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/03.4
+圈住的样本会在后面几集再出现。源码与成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/03.4

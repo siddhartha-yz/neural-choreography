@@ -38,4 +38,4 @@ NOTES 点名、须在画面上对得上的数：15.5、1.00、0.50、0.427、0.5
 刻意没演：训练、假设词反过来查前提、逐词 MLP 比较 g([a_i,β_i])、把比较结果再加总进分类头、W 矩阵。教材的 Attend / Compare / Aggregate 完整版会把 β 挤没；这一集只留「一个查询点亮假设，然后三向分数」。
 片内禁止中文句子。没有旁白。只有符号、维数、正在变化的数，以及半秒章节号。
 
-成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/15.5
+成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/15.5

@@ -32,4 +32,4 @@ NOTES 点名、须在画面上对得上的数：13.5、0.15、0.40、0.64、0.09
 刻意没演：第三档 1×1, s=0.8、每格多种宽高比、类别/偏移量预测、SSD 整网。
 片内禁止中文句子。没有旁白。只有符号、维数、正在变化的数，以及半秒章节号。
 
-成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/13.5
+成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/13.5

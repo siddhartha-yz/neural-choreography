@@ -36,4 +36,4 @@ NOTES 点名、须在画面上对得上的数：10.1、0.50、2.00、1.20、1.00
 刻意没演：平均汇聚对照、加性 / 缩放点积两种评分（那是 10.3）、Nadaraya–Watson 核回归（10.2）、自注意力。咖啡和书的生物学图也不进片。
 片内禁止中文句子。没有旁白。只有符号、维数、正在变化的数，以及半秒章节号。
 
-成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/10.1
+成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/10.1

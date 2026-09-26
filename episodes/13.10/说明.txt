@@ -1,5 +1,5 @@
 集号：13.10（13.10 转置卷积）
-机制：一个输入格乘核后铺开，输出比输入更大（卷积的几何逆）
+机制：一个输入格乘核后铺开，输出比输入更大（单个输入的贡献铺到输出，重叠处相加；不是逆运算）
 教材：https://zh.d2l.ai/chapter_computer-vision/transposed-conv.html
 
 片内必须出现的符号、维数、关键数字（须与 scene.py 的 numpy 一致）：
@@ -35,4 +35,4 @@ NOTES 点名、须在画面上对得上的数：13.10、0
 刻意没演：步幅、填充、把核翻过来当真正卷积、多通道、训练、用转置卷积做分割上采样。
 片内禁止中文句子。没有旁白。只有符号、维数、正在变化的数，以及半秒章节号。
 
-成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/13.10
+成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/13.10

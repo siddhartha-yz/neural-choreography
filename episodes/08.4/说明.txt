@@ -1,3 +1,7 @@
+历史制作说明：以下只对应旧 Manim 场景，不再作为新作要求。
+教学分镜 STORYBOARD.md 已撤回；新作以 ../../docs/CREATIVE_PRINCIPLES.md 和 ../../docs/CONTINUOUS_STUDY.md 为准。
+下文“必须”“禁止”、固定片头和固定主角约束均已废止。
+
 集号：08.4（8.4 循环神经网络）
 机制：ht=φ(Wxh xt + Whh h(t-1)+b)：隐状态沿时间带走历史。不训练
 教材：https://zh.d2l.ai/chapter_recurrent-neural-networks/rnn.html
@@ -25,4 +29,4 @@ NOTES 点名、须在画面上对得上的数：8.4、+0.00、+1.00、+0.50、+0
 刻意没演：输出层 ŷ=W_hq h_t+b_q、交叉熵、训练、沿时间反传、截断、字符级语言模型。
 片内禁止中文句子。没有旁白。只有符号、维数、正在变化的数，以及半秒章节号。
 
-成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/08.4
+成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/08.4

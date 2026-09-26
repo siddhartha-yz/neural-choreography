@@ -26,4 +26,4 @@ NOTES 点名、须在画面上对得上的数：11.6、0.4、-2.17、0.47、0.5�
 刻意没演：随机梯度、Nesterov、自适应学习率、β 扫一遍。β=0 就是刚才的 GD，不必再写。
 片内禁止中文句子。没有旁白。只有符号、维数、正在变化的数，以及半秒章节号。
 
-成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/11.6
+成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/11.6

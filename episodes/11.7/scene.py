@@ -9,6 +9,7 @@ w ← w − η ∇f / √s. Same η; the steep axis is the one 1/√s damps.
 from __future__ import annotations
 
 import numpy as np
+from scripts.episode_intro import show_episode_intro
 from manim import (
     BLACK,
     BLUE_A,
@@ -36,9 +37,6 @@ from manim import (
 )
 
 
-config.pixel_width = 1920
-config.pixel_height = 1080
-config.frame_rate = 60
 config.background_color = BLACK
 
 
@@ -234,11 +232,8 @@ class Episode117(Scene):
             )
         )
 
-        # 0.00–0.40 s: chapter mark only.
-        chapter_mark = Text("11.7", font_size=66, color=WHITE)
-        self.add(chapter_mark)
-        self.wait(0.24)
-        self.play(FadeOut(chapter_mark), run_time=0.16, rate_func=linear)
+        # 4-second Chinese title and explanation; later timing comments refer to the original cut.
+        show_episode_intro(self, "11.7")
 
         opacities = (0.82, 0.68, 0.52, 0.38, 0.28)
         contours = VGroup(

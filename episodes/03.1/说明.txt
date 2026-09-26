@@ -22,4 +22,4 @@ NOTES 点名、须在画面上对得上的数：3.1、1.15、+0.55、-0.955、-1
 刻意没演：解析解、损失曲面、从零写训练循环。
 片内禁止中文句子。没有旁白。只有符号、维数、正在变化的数，以及半秒章节号。
 
-成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/03.1
+成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/03.1

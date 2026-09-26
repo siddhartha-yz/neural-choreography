@@ -27,4 +27,4 @@ NOTES 点名、须在画面上对得上的数：11.2、-1.5、0.40、0.750、-0.
 刻意没演：凸集、下水平集、Hessian 半正定、约束和拉格朗日、投影。詹森的期望写法 E[f(X)]≥ f(E[X]) 没单独出现：片里的弦就是两项的詹森。指数 e^0.5x 那只凸函数也没画，一只凸碗够对照。
 片内禁止中文句子。没有旁白。只有符号、维数、正在变化的数，以及半秒章节号。
 
-成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/11.2
+成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/11.2

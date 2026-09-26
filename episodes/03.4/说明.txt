@@ -24,4 +24,4 @@ NOTES 点名、须在画面上对得上的数：3.4、1.00、0.50、+1.660、-0.
 刻意没演：交叉熵、训练、把 argmax 当成已经可用的分类器。权重是写死的 3×2 矩阵，不是学来的。
 片内禁止中文句子。没有旁白。只有符号、维数、正在变化的数，以及半秒章节号。
 
-成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/03.4
+成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/03.4

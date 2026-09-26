@@ -42,4 +42,4 @@ NOTES 点名、须在画面上对得上的数：7.3
 刻意没演：NiN 块里的两层 1×1 加 ReLU、softmax、训练、把 GAP 再接一层全连接。旅行者只是视觉身份：先是一个空间格，再是一根类别 logit。
 片内禁止中文句子。没有旁白。只有符号、维数、正在变化的数，以及半秒章节号。
 
-成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/07.3
+成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/07.3

@@ -26,4 +26,4 @@ NOTES 点名、须在画面上对得上的数：11.8、0.30
 刻意没演：RMSProp 的随机梯度版本、不同 γ 的扫参、Adam 的一阶动量，或实际神经网络训练。这里的全部目的是把“累计”和“会遗忘的平均”放在一只相同的谷里对照。
 片内禁止中文句子。没有旁白。只有符号、维数、正在变化的数，以及半秒章节号。
 
-成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/11.8
+成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/11.8

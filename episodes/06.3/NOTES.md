@@ -12,7 +12,7 @@
 
 ## 画面里在干什么
 
-1. **半秒 `6.3`**：章节号。
+1. **中文片头（4 秒）**：内容名称、章节号和一句极简讲解。
 2. **\(X\) 是 \(3\times 3\)**，就是书 6.2 那组 \(0\ldots 8\)。上面的括号是 \(n=3\)。中间的 \(K=\begin{pmatrix}0&1\\2&3\end{pmatrix}\)，\(k=2\)。
 3. **公式只出现一次**：`floor((n − k + 2p) / s) + 1`。后面变的是格子，不是又写一遍公式。
 4. **\(p=0\), \(s=1\)**：黄框贴着走相邻的四格。右边输出是
@@ -40,4 +40,4 @@
 
 《动手学深度学习》6.3：https://zh.d2l.ai/chapter_convolutional-neural-networks/padding-and-strides.html
 
-圈住的是一格会消失的输出。源码与成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/06.3
+圈住的是一格会消失的输出。源码与成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/06.3

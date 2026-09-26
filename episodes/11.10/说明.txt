@@ -34,4 +34,4 @@ NOTES 点名、须在画面上对得上的数：11.10、0.1、0.2、-3.29、+0.2
 刻意没演：Yogi、学习率衰减、β 扫描、发散反例。书里 ε=10^-6。
 片内禁止中文句子。没有旁白。只有符号、维数、正在变化的数，以及半秒章节号。
 
-成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/11.10
+成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/11.10

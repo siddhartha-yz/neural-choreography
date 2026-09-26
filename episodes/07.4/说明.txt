@@ -53,4 +53,4 @@ NOTES 点名、须在画面上对得上的数：7.4、6.2、6.3、4、0、24、3
 刻意没演：3×3/5×5 前面的 1×1 降维、汇聚后面的 1×1、ReLU、九个 Inception 块叠成的整座 GoogLeNet、训练。那些是书里搭网络的零件；片里只把「并行四窗、通道拼接」做成几何。
 片内禁止中文句子。没有旁白。只有符号、维数、正在变化的数，以及半秒章节号。
 
-成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/07.4
+成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/07.4

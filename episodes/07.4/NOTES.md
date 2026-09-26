@@ -12,7 +12,7 @@
 
 ## 画面里在干什么
 
-1. **半秒 `7.4`**：章节号。
+1. **中文片头（4 秒）**：内容名称、章节号和一句极简讲解。
 2. **\(X\) 是 \(3\times 3\)**，还是书 6.2 那组 \(0\ldots 8\)。光晕圈住中心那一格，值是 \(4\)。
 3. **公式只出现一次**：\(Y=\mathrm{concat}(Y_1,Y_3,Y_5,Y_p)\)。后面变的是四张图和那一摞通道，不是又写一遍公式。
 4. **\(1\times 1\)**：黄框只罩中心一格。\(Y_1=X\)，旅行者仍是 \(4\)。
@@ -39,4 +39,4 @@
 
 《动手学深度学习》7.4：https://zh.d2l.ai/chapter_convolutional-modern/googlenet.html
 
-圈住的是一格通道会变多的输出。源码与成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/07.4
+圈住的是一格通道会变多的输出。源码与成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/07.4

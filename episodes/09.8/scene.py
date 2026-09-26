@@ -8,6 +8,7 @@ expanded.  The yellow halo marks the surviving k=2 beam.
 from __future__ import annotations
 
 import numpy as np
+from scripts.episode_intro import show_episode_intro
 from manim import (
     AnimationGroup,
     BLACK,
@@ -21,6 +22,7 @@ from manim import (
     FadeOut,
     Flash,
     LaggedStart,
+    LEFT,
     Line,
     RIGHT,
     Scene,
@@ -35,9 +37,6 @@ from manim import (
 )
 
 
-config.pixel_width = 1920
-config.pixel_height = 1080
-config.frame_rate = 60
 config.background_color = BLACK
 
 
@@ -173,11 +172,8 @@ class Episode098(Scene):
         )
         print("surviving beam (k=2 top) =", VOCAB[K2_T2_KEEP[0][0]] + VOCAB[K2_T2_KEEP[0][1]])
 
-        # 0.00–0.40 s: chapter mark only.
-        chapter_mark = Text("9.8", font_size=66, color=WHITE)
-        self.add(chapter_mark)
-        self.wait(0.24)
-        self.play(FadeOut(chapter_mark), run_time=0.16, rate_func=linear)
+        # 4-second Chinese title and explanation; later timing comments refer to the original cut.
+        show_episode_intro(self, "09.8")
 
         # One empty pocket at the top: the keep-top-k formula, once.
         formula = Text("Y ← topk_k(Y × V)", font_size=34, color=WHITE).move_to(np.array([0.0, 3.42, 0.0]))

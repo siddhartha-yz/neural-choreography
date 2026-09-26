@@ -1,6 +1,6 @@
 # 点还在动 · 目录
 
-一集一个机制，20–40 秒，1080p60 静音。片内只有符号和正在变的数。主角是光晕旅行者（视觉身份，不是同一个数据集）。成片必须抽帧过审。
+目录记录现有源码与历史机制。新作按 [创作约定](docs/CREATIVE_PRINCIPLES.md) 编排连续的 D2L 动态艺术作品，以群体运动、几何形变与章节衔接为主，保留极简章节标识。当前试作见 [四章节串联样片](docs/CONTINUOUS_STUDY.md)。旧机制描述和技术验证不代表统一作品已经完成。
 
 跳过：第 1–2 章、所有「从零实现」、简洁 API / Kaggle / 附录、没有独立几何机制的工程节（存盘、GPU 列表等）。
 
@@ -8,16 +8,18 @@
 
 ## 已过审
 
+此处记录人工过审的成片；后文为源码与机制目录。自动渲染、视频规格和解码检查通过，不会自动升级为“已过审”。可用 `python -m scripts.review_all` 生成当前工作树的预览验证报告，或加 `--profile final` 验证成片。
+
 | 集 | 机制 | 成片 |
 | --- | --- | --- |
-| 3.1 | 小批量 SGD 把错线拽正，留下噪声残差 | [Release 03.1](https://github.com/siddhartha-yz/points-still-moving/releases/tag/03.1) |
-| 3.4 | 未训练前向 \(o=Wx+b\) → softmax，和为 1 | [Release 03.4](https://github.com/siddhartha-yz/points-still-moving/releases/tag/03.4) |
+| 3.1 | 小批量 SGD 把错线拽正，留下噪声残差 | [Release 03.1](https://github.com/siddhartha-yz/neural-choreography/releases/tag/03.1) |
+| 3.4 | 未训练前向 \(o=Wx+b\) → softmax，和为 1 | [Release 03.4](https://github.com/siddhartha-yz/neural-choreography/releases/tag/03.4) |
 
 ## 第 3 章其余
 
 3.2 / 3.3 / 3.6 / 3.7 是实现。3.5 是 Fashion-MNIST 读入。都不做正片。
 
-## 第 4 章 · 今晚第一波
+## 第 4 章 · 多层感知机
 
 | 集 | D2L | 机制 |
 | --- | --- | --- |
@@ -122,7 +124,7 @@
 | 13.3 | [目标检测和边界框](https://zh.d2l.ai/chapter_computer-vision/bounding-box.html) | 物体用矩形框住：两角 \((x_1,y_1,x_2,y_2)\) 与中心+宽高互相转 |
 | 13.4 | [锚框](https://zh.d2l.ai/chapter_computer-vision/anchor.html) | 格子上铺不同形状的锚框，与真框算 \(\mathrm{IoU}=|A\cap B|/|A\cup B|\) |
 | 13.5 | [多尺度目标检测](https://zh.d2l.ai/chapter_computer-vision/multiscale-object-detection.html) | 粗特征图放大感受野、细特征图盯小物体，多层格子同时铺锚框 |
-| 13.10 | [转置卷积](https://zh.d2l.ai/chapter_computer-vision/transposed-conv.html) | 一个输入格乘核后铺开，输出比输入更大（卷积的几何逆） |
+| 13.10 | [转置卷积](https://zh.d2l.ai/chapter_computer-vision/transposed-conv.html) | 一个输入格乘核后铺开，输出比输入更大（单个输入的贡献铺到输出，重叠处相加；不是逆运算） |
 
 13.1 / 13.2 是增广与微调。13.6 / 13.9 是数据集。13.7 / 13.8 / 13.11 / 13.12 是检测与分割名录。13.13 / 13.14 是 Kaggle。都不做正片。
 
@@ -147,4 +149,4 @@
 
 第 16 章是附录：Jupyter / SageMaker / EC2 / GPU 选型 / 贡献 / `d2l` API。整章不做正片。在线 [zh.d2l.ai](https://zh.d2l.ai/) 2.0.0 目录到第 16 章为止，没有第 17、18 章编号（推荐系统、GAN 未进本章目录）。不发明集号。
 
-质量门槛：标签贴几何或固定口袋；不 `scale` Dot；网格只描边；片内无中文；抽帧看最后一帧点还在、符号可读、数字自洽。
+质量门槛：标签贴几何或固定口袋；不 `scale` Dot；网格只描边；机制段保持无中文讲解，片头有中文介绍；抽帧看最后一帧点还在、符号可读、数字自洽。

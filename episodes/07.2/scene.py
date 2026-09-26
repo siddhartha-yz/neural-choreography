@@ -7,6 +7,7 @@ pad 1 and ReLU, then 2×2 max-pool stride 2. Not VGG-11, not a 13-layer tower.
 from __future__ import annotations
 
 import numpy as np
+from scripts.episode_intro import show_episode_intro
 from manim import (
     BLACK,
     BLUE_A,
@@ -33,9 +34,6 @@ from manim import (
 )
 
 
-config.pixel_width = 1920
-config.pixel_height = 1080
-config.frame_rate = 60
 config.background_color = BLACK
 
 
@@ -101,11 +99,8 @@ class Episode072(Scene):
         print("D2L 7.2 P1 ch0=\n{}".format(np.array2string(POOL_1[:, :, 0], precision=3, separator=", ")))
         print("D2L 7.2 P2=\n{}".format(np.array2string(POOL_2, precision=3, separator=", ")))
 
-        # 0.00–0.40 s: chapter mark only.
-        chapter_mark = Text("7.2", font_size=66, color=WHITE)
-        self.add(chapter_mark)
-        self.wait(0.24)
-        self.play(FadeOut(chapter_mark), run_time=0.16, rate_func=linear)
+        # 4-second Chinese title and explanation; later timing comments refer to the original cut.
+        show_episode_intro(self, "07.2")
 
         input_stack, input_w, input_h = self.make_channel_stack(INPUT_X, self.sample_center)
         shape_label = self.make_shape_label("8×8", input_w, input_h, self.sample_center, channels=1)

@@ -16,7 +16,7 @@
 
 ## 画面里在干什么
 
-1. **半秒 `4.7`**：章节号。
+1. **中文片头（4 秒）**：内容名称、章节号和一句极简讲解。
 2. **点云先停住**。黄、亮蓝、暗蓝是原始分组，不是预测。
 3. **圈住旅行者**，左侧固定写 \(x_1=1.00\)、\(x_2=0.50\)、\(y=0.690\)。
 4. **同一条路出现**：\(x\to z\to h\to\hat{y}\)。正向沿路点亮。\(z_1=+1.100\)，\(z_2=-0.850\)（黄，可负）。ReLU 之后 \(h_1=+1.100\)，\(h_2=0.000\)（下面那条边变暗）。
@@ -39,4 +39,4 @@
 
 《动手学深度学习》4.7：https://zh.d2l.ai/chapter_multilayer-perceptrons/backprop.html
 
-圈住的样本会在后面几集再出现。源码与成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/04.7
+圈住的样本会在后面几集再出现。源码与成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/04.7

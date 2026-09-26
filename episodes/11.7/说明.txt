@@ -27,4 +27,4 @@ NOTES 点名、须在画面上对得上的数：11.7、0.4、-2.17、0.47、-2.9
 刻意没演：把 η 加到 2、RMSProp 的滑动平均、Adam、ε 的数值细节。s 只增不减、后期迈不动，是。
 片内禁止中文句子。没有旁白。只有符号、维数、正在变化的数，以及半秒章节号。
 
-成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/11.7
+成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/11.7

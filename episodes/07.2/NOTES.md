@@ -14,7 +14,7 @@ AlexNet 证明了深层能用，但没留下可复用的零件。VGG 的办法�
 
 ## 画面里在干什么
 
-1. **半秒 `7.2`**：章节号。
+1. **中文片头（4 秒）**：内容名称、章节号和一句极简讲解。
 2. **\(8\times 8\)，\(c=1\)**：左上一块亮、右下一块较弱。格子只描边。
 3. **黄框是 \(3\times 3\)**：卷积带 pad 1，高宽仍是 \(8\times 8\)。后面多出一张薄片，标签改成 \(c=2\)。
 4. **\(2\times 2\) 窗口切过**，图变成 **\(4\times 4\)，\(c=2\)**。格子还是原来那么大，所以边长少一半就是分辨率掉了。
@@ -46,4 +46,4 @@ VGG-11 的五块清单、\(224\times 224\)、全连接、Dropout、训练。下�
 
 《动手学深度学习》7.2：https://zh.d2l.ai/chapter_convolutional-modern/vgg.html
 
-圈住的是整枚样本。源码与成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/07.2
+圈住的是整枚样本。源码与成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/07.2

@@ -21,4 +21,4 @@ NOTES 点名、须在画面上对得上的数：8.7
 刻意没演：梯度爆炸或消失的长链数值曲线、参数更新、批次和语言模型训练。这里只建立“展开后再反走同一条链”的几何机制。
 片内禁止中文句子。没有旁白。只有符号、维数、正在变化的数，以及半秒章节号。
 
-成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/08.7
+成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/08.7

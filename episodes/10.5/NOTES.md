@@ -19,7 +19,7 @@ h_i=f(W_i^{(q)}q,\,W_i^{(k)}k,\,W_i^{(v)}v)
 
 ## 画面里在干什么
 
-1. **半秒 `10.5`**：章节号。
+1. **中文片头（4 秒）**：内容名称、章节号和一句极简讲解。
 2. **三个词元先停住**，标成 1–3。蓝黄是身份，不是类别。词元 2 在 \((1.00,\,0.50)\)，就是系列里那颗旅行者。
 3. **圈住旅行者**，左侧固定写 \(x_1=1.00\)、\(x_2=0.50\)。这是这个向量的两个分量，不是注意力权重。
 4. **公式 \(\hat y=W_o[h_1;h_2]\) 只出现一次**。右边空出两行三个格子，行是头、列是键。
@@ -43,4 +43,4 @@ h_i=f(W_i^{(q)}q,\,W_i^{(k)}k,\,W_i^{(v)}v)
 
 《动手学深度学习》10.5：https://zh.d2l.ai/chapter_attention-mechanisms/multihead-attention.html
 
-片里是真实的投影 + 缩放点积 + \(W_o\)，权重未训练。源码与成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/10.5
+片里是真实的投影 + 缩放点积 + \(W_o\)，权重未训练。源码与成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/10.5

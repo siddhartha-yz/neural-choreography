@@ -12,7 +12,7 @@
 
 ## 画面里在干什么
 
-1. **半秒 `6.4`**：章节号。
+1. **中文片头（4 秒）**：内容名称、章节号和一句极简讲解。
 2. **两张 \(3\times 3\)**：\(X_1\) 亮蓝、\(X_2\) 浅蓝，先停住。数字写在格子上。
 3. **两枚 \(2\times 2\) 核** \(K_1\)、\(K_2\)，各跟一张输入对齐。公式是 \(o=(X_1 * K_1)+(X_2 * K_2)\)。右边空着一张 \(2\times 2\) 的 \(O_1\)。
 4. **黄框先罩住 \(X_1\) 左上 \(2\times 2\)**，核 \(K_1\) 一起亮。中间写出 \(19\)：那是 \(0\cdot0+1\cdot1+3\cdot2+4\cdot3\)。
@@ -36,4 +36,4 @@
 
 《动手学深度学习》6.4：https://zh.d2l.ai/chapter_convolutional-neural-networks/channels.html
 
-圈住的样本会在后面几集再出现。源码与成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/06.4
+圈住的样本会在后面几集再出现。源码与成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/06.4

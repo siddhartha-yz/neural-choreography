@@ -40,4 +40,4 @@ NOTES 点名、须在画面上对得上的数：9.8、0.524、0.437、0.039、0.
 刻意没演：穷举搜索、长度惩罚 L^α、真正的翻译解码器、把 <eos> 画进词表。
 片内禁止中文句子。没有旁白。只有符号、维数、正在变化的数，以及半秒章节号。
 
-成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/09.8
+成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/09.8

@@ -21,4 +21,4 @@ NOTES 点名、须在画面上对得上的数：9.1、0.60、-0.40、0.20、-0.2
 刻意没演：重置门、候选状态如何由输入与重置后的历史算出、时间反向传播、训练。这里只锁定更新门「保留多少旧状态」这一件事。
 片内禁止中文句子。没有旁白。只有符号、维数、正在变化的数，以及半秒章节号。
 
-成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/09.1
+成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/09.1

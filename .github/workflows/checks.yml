@@ -1,0 +1,42 @@
+name: Episode checks
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Install render dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg libcairo2-dev libpango1.0-dev pkg-config fonts-dejavu-core fonts-noto-cjk
+          python -m pip install -r requirements-dev.txt
+      - name: Check undefined names and syntax
+        run: |
+          ruff check --select E9,F63,F7,F82 episodes experiments scripts tests zanim_scenes
+          python -m compileall -q episodes experiments scripts tests zanim_scenes
+      - name: Check scene imports and numerical invariants
+        run: python -m unittest discover -s tests -v
+      - name: Render representative scenes
+        run: |
+          python -m scripts.render 03.1
+          python -m scripts.render 09.8
+          python -m scripts.render 13.10
+      - name: Check videos and extract review frames
+        shell: bash
+        run: |
+          for episode in 03.1 09.8 13.10; do
+            mapfile -t videos < <(find media/preview -name "$episode-preview.mp4")
+            test "${#videos[@]}" -eq 1
+            python -m scripts.qa_video "${videos[0]}" --profile preview --output "media/review/$episode"
+          done
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: preview-and-frame-review
+          path: media/
+          if-no-files-found: ignore

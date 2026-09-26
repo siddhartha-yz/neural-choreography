@@ -18,7 +18,7 @@
 
 ## 画面里在干什么
 
-1. **半秒 `11.11`**：章节号。
+1. **中文片头（4 秒）**：内容名称、章节号和一句极简讲解。
 2. **描边等高线**：数字 \(6,12,33\) 写在线上。原点十字是最小值。
 3. **圈住旅行者 \(w\)**。公式 \(w\leftarrow w-\eta(t)\nabla f\) 只出现一次。\(f(w)\) 跟在点旁边。
 4. **左侧口袋**：\(\eta\) 写在一条 \(\eta(t)\) 描边曲线上方。黄圈沿曲线走。曲线顶点下的短黄刻度是热身结束 \(t_w=3\)。\(\eta_0=0.18\)，\(\eta_T=0.02\)，\(\eta_w=0.03\)，\(T=10\)。
@@ -43,4 +43,4 @@
 
 《动手学深度学习》11.11：https://zh.d2l.ai/chapter_optimization/lr-scheduler.html
 
-圈住的是参数点。源码与成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/11.11
+圈住的是参数点。源码与成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/11.11

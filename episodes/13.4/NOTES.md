@@ -12,7 +12,7 @@
 
 ## 画面里在干什么
 
-1. **半秒 `13.4`**：章节号。
+1. **中文片头（4 秒）**：内容名称、章节号和一句极简讲解。
 2. **\(6\times 6\) 格子**先停住。格子只描边，里面没有数。
 3. **黄框罩住一格**（第 2 行第 2 列）。后面两只锚都以这一格的中心为中心。
 4. **两只锚**：\(A_1\) 是 \(s=0.4,\,r=1\) 的正方形，\(A_2\) 是同一缩放、\(r=4\) 的扁框。面积相同，形状不同。这就是书里 \((s_1,r_1)\)、\((s_1,r_2)\) 那一组。
@@ -46,4 +46,4 @@ y=[0.15,0.15,0.55,0.75]
 
 《动手学深度学习》13.4：https://zh.d2l.ai/chapter_computer-vision/anchor.html
 
-圈住的样本会在后面几集再出现。源码与成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/13.4
+圈住的样本会在后面几集再出现。源码与成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/13.4

@@ -8,6 +8,7 @@ values.  That is the contrast with 7.6, where F(x) is added.
 from __future__ import annotations
 
 import numpy as np
+from scripts.episode_intro import show_episode_intro
 from manim import (
     BLACK,
     BLUE,
@@ -37,9 +38,6 @@ from manim import (
 )
 
 
-config.pixel_width = 1920
-config.pixel_height = 1080
-config.frame_rate = 60
 config.background_color = BLACK
 
 
@@ -226,11 +224,8 @@ class Episode077(Scene):
             )
         )
 
-        # 0.00–0.40 s: chapter mark only.
-        chapter_mark = Text("7.7", font_size=66, color=WHITE)
-        self.add(chapter_mark)
-        self.wait(0.24)
-        self.play(FadeOut(chapter_mark), run_time=0.16, rate_func=linear)
+        # 4-second Chinese title and explanation; later timing comments refer to the original cut.
+        show_episode_intro(self, "07.7")
 
         map_x0 = self.make_map(INPUT_X[0], self.map_origin(0), BLUE, "x₀", BLUE_A)
         map_x1 = self.make_map(INPUT_X[1], self.map_origin(1), BLUE_A, "x₁", BLUE_A)

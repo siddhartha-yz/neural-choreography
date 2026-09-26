@@ -14,7 +14,7 @@
 
 ## 画面里在干什么
 
-1. **半秒 `13.3`**：章节号。
+1. **中文片头（4 秒）**：内容名称、章节号和一句极简讲解。
 2. **画布先停住**。原点 `0` 在左上，\(x\) 沿顶边，\(y\) 朝下。里面是一个斜放的椭圆，不是框。
 3. **黄框长出来**，刚好包住这颗物体。框比物体大一圈，所以看得出这是边界框，不是物体自己的轮廓。
 4. **两角**：左上 \((x_1,y_1)=(0.50,\,0.30)\)，右下 \((x_2,y_2)=(2.10,\,1.50)\)。数贴在角上。
@@ -37,4 +37,4 @@
 
 《动手学深度学习》13.3：https://zh.d2l.ai/chapter_computer-vision/bounding-box.html
 
-圈住的样本会在后面几集再出现。源码与成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/13.3
+圈住的样本会在后面几集再出现。源码与成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/13.3

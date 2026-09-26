@@ -12,7 +12,7 @@
 
 ## 画面里在干什么
 
-1. **半秒 `14.1`**：章节号。
+1. **中文片头（4 秒）**：内容名称、章节号和一句极简讲解。
 2. **四根向量先停在轴上**：\(\mathbf{v}_c\) 在 \(e_1\)，\(\mathbf{u}_o\) 在 \(e_2\)，一开始 \(\mathbf{u}_o^\top\mathbf{v}_c=0\)。这是独热彼此正交的 2-D 缩影，不是 4 维独热本身。
 3. **圈住旅行者** \(\mathbf{v}_c\)。左下固定口袋写 \(s_o=\mathbf{u}_o^\top\mathbf{v}_c\)、\(s_n=\mathbf{u}_n^\top\mathbf{v}_c\)，开始都是 \(+0.00\)。
 4. **公式出现一次**：\(P(w_o\mid w_c)\propto\exp(\mathbf{u}_o^\top\mathbf{v}_c)\)。黄线连上窗口对，不连 \(\mathbf{u}_n\)。
@@ -37,4 +37,4 @@ CBOW、负采样、层次 softmax、整张词表、预训练好的 embedding。1
 
 《动手学深度学习》14.1：https://zh.d2l.ai/chapter_natural-language-processing-pretraining/word2vec.html
 
-圈住的样本会在后面几集再出现。源码与成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/14.1
+圈住的样本会在后面几集再出现。源码与成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/14.1

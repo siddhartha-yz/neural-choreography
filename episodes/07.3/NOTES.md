@@ -14,7 +14,7 @@
 
 ## 画面里在干什么
 
-1. **半秒 `7.3`**：章节号。
+1. **中文片头（4 秒）**：内容名称、章节号和一句极简讲解。
 2. **两张 \(2\times 2\)**：\(X_1\)、\(X_2\) 先停住。数字写在格子上。
 3. **一枚 \(1\times 1\)**：中间那张 \(3\times 2\) 的 \(W\) 就是它——三根输出通道、两根输入通道。右边空着三张同样 \(2\times 2\) 的 \(H_1,H_2,H_3\)。公式是 \(h=Wx\)。
 4. **黄框同时罩住两张输入的左上格**。那一格的通道是 \(x_1=1\)、\(x_2=0\)，写在左侧固定口袋里，不是 \(x=[\,]\)。光晕圈住这个空间格。
@@ -40,4 +40,4 @@ NiN 块里的两层 \(1\times 1\) 加 ReLU、softmax、训练、把 GAP 再接�
 
 《动手学深度学习》7.3：https://zh.d2l.ai/chapter_convolutional-modern/nin.html
 
-圈住的样本会在后面几集再出现。源码与成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/07.3
+圈住的样本会在后面几集再出现。源码与成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/07.3

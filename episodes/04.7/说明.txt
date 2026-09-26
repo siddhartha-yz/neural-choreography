@@ -22,4 +22,4 @@ NOTES 点名、须在画面上对得上的数：4.7、1.00、0.50、0.690、+1.1
 刻意没演：多步 SGD、∂ℓ/∂ W 矩阵、权重衰减、把框架的 backward() 当成黑盒。
 片内禁止中文句子。没有旁白。只有符号、维数、正在变化的数，以及半秒章节号。
 
-成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/04.7
+成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/04.7

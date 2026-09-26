@@ -25,4 +25,4 @@ NOTES 点名、须在画面上对得上的数：6.3、6.2
 刻意没演：多通道、把核翻过来当真正卷积、训练。步幅在高宽上也不拆开——片里始终 s_h=s_w。
 片内禁止中文句子。没有旁白。只有符号、维数、正在变化的数，以及半秒章节号。
 
-成片：https://github.com/siddhartha-yz/points-still-moving/releases/tag/06.3
+成片：https://github.com/siddhartha-yz/neural-choreography/releases/tag/06.3
