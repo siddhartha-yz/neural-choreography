@@ -558,3 +558,14 @@ class NativeModelTests(unittest.TestCase):
             np.testing.assert_allclose(output[:,k], expected['y'].ravel())
         self.assertEqual(output.shape, x.shape)
         np.testing.assert_allclose(output, np.maximum(x+correction,0))
+
+    def test_batch_norm_film_centers_and_scales_each_feature(self):
+        import numpy as np
+        from zanim_scenes.batch_norm_art import stages
+        from zanim_scenes.models import ep_07_5 as d
+        x, centered, normalized, output = stages()
+        np.testing.assert_allclose(centered.mean(axis=1), 0, atol=1e-14)
+        np.testing.assert_allclose(normalized.mean(axis=1), 0, atol=1e-14)
+        np.testing.assert_allclose(normalized.var(axis=1), 1)
+        np.testing.assert_allclose(normalized, np.broadcast_to(d.X_HAT, x.shape), atol=1e-14)
+        np.testing.assert_allclose(output, d.GAMMA*normalized+d.BETA)
