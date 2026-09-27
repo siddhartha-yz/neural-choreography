@@ -1,4 +1,4 @@
-"""Render the continuous 08.4 through 10.2 motion study."""
+"""Render the continuous 07.7 through 10.2 motion study."""
 
 import argparse
 import os
@@ -19,6 +19,7 @@ def main():
         default=0.0,
         help="Render a tail from this absolute scene time",
     )
+    parser.add_argument("--end", type=float, help="Stop at this absolute scene time")
     args = parser.parse_args()
     os.environ.setdefault(
         "ZANIM_TYPST", str(Path(__file__).with_name("typst_binding.py").resolve())
@@ -31,11 +32,15 @@ def main():
     args.output.parent.mkdir(parents=True, exist_ok=True)
     if args.time is None:
         scene.render_video(
-            args.output, start=args.start, workers=4, verify_random_access=True
+            args.output,
+            start=args.start,
+            end=args.end,
+            workers=4,
+            verify_random_access=True,
         )
     else:
         scene.render_frame(args.output, time=args.time)
-    duration = scene.duration - args.start
+    duration = (scene.duration if args.end is None else args.end) - args.start
     print(f"Continuous study: {duration:.2f}s -> {args.output}")
 
 
