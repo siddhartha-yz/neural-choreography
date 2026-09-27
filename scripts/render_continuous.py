@@ -1,4 +1,4 @@
-"""Render the continuous 08.4 through 09.8 motion study."""
+"""Render the continuous 08.4 through 10.2 motion study."""
 
 import argparse
 import os

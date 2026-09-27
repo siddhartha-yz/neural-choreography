@@ -530,3 +530,17 @@ class NativeModelTests(unittest.TestCase):
                 expected += sum(math.log(float(d.P_STEP2[a,b])) for a,b in zip(path,path[1:]))
                 self.assertAlmostEqual(score, expected)
             parents = {p for p, _ in kept}
+
+    def test_continuous_attention_uses_normalized_matching_weights(self):
+        import numpy as np
+        from zanim_scenes.attention_art import selection
+        from zanim_scenes.models import ep_10_1 as d
+        for u in np.linspace(0,1,19):
+            query, weights, output = selection(u)
+            expected = d.softmax_rows((query @ d.KEYS.T)[None,:])[0]
+            np.testing.assert_allclose(weights, expected)
+            self.assertAlmostEqual(float(weights.sum()), 1.)
+            self.assertTrue((weights > 0).all())
+            self.assertAlmostEqual(output, float(weights @ d.VALUES[:,0]))
+        for j in range(3):
+            np.testing.assert_allclose(selection(j/3)[1], d.WEIGHTS[j])

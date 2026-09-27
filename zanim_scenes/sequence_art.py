@@ -235,3 +235,6 @@ def append(s, old, edges, chapter):
         for highlight in highlights:
             highlight.fade_in(duration=0.8)
     s.wait(1.2)
+    from zanim_scenes.attention_art import append as append_attention
+
+    append_attention(s, objects, chapter)
