@@ -183,60 +183,16 @@ def build(width=1920, height=1080, fps=60):
             for i in range(COUNT)
         ]
     )
-    from zanim_scenes.inception_art import (
-        append as prepend_inception,
-        PREFIX_SECONDS as INCEPTION_SECONDS,
-    )
+    from zanim_scenes.feature_suite import append as feature_suite, PREFIX_SECONDS
 
-    inception_handoff = prepend_inception(s, chapter, PALETTE)
+    handoff = feature_suite(s, chapter, rings, PALETTE)
     with s.parallel():
         for item in header:
             item.fade_out(duration=0.35)
-    for item in header + inception_handoff:
+    for item in header + handoff:
         item.remove()
     header = []
-    assert abs(s.duration - INCEPTION_SECONDS) < 1e-8
-    bn_start = s.duration
-    from zanim_scenes.batch_norm_art import (
-        append as prepend_bn,
-        PREFIX_SECONDS as BN_SECONDS,
-    )
-
-    bn_handoff = prepend_bn(s, chapter, PALETTE)
-    with s.parallel():
-        for item in header:
-            item.fade_out(duration=0.35)
-    for item in header + bn_handoff:
-        item.remove()
-    header = []
-    assert abs(s.duration - bn_start - BN_SECONDS) < 1e-8
-    residual_start = s.duration
-    from zanim_scenes.residual_art import (
-        append as prepend_residual,
-        PREFIX_SECONDS as RESIDUAL_SECONDS,
-    )
-
-    residual_handoff = prepend_residual(s, chapter, PALETTE)
-    with s.parallel():
-        for item in header:
-            item.fade_out(duration=0.35)
-    for item in header + residual_handoff:
-        item.remove()
-    header = []
-    assert abs(s.duration - residual_start - RESIDUAL_SECONDS) < 1e-8
-    dense_start = s.duration
-    from zanim_scenes.dense_art import append as prepend_dense, PREFIX_SECONDS
-
-    handoff = prepend_dense(s, chapter, rings, PALETTE)
-    with s.parallel():
-        for item in header:
-            item.fade_out(duration=0.35)
-    for item in header:
-        item.remove()
-    header = []
-    for item in handoff:
-        item.remove()
-    assert abs(s.duration - dense_start - PREFIX_SECONDS) < 1e-8
+    assert abs(s.duration - PREFIX_SECONDS) < 1e-8
     current = rings.copy()
     edges = []
     for i in range(COUNT):
