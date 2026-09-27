@@ -183,6 +183,20 @@ def build(width=1920, height=1080, fps=60):
             for i in range(COUNT)
         ]
     )
+    from zanim_scenes.inception_art import (
+        append as prepend_inception,
+        PREFIX_SECONDS as INCEPTION_SECONDS,
+    )
+
+    inception_handoff = prepend_inception(s, chapter, PALETTE)
+    with s.parallel():
+        for item in header:
+            item.fade_out(duration=0.35)
+    for item in header + inception_handoff:
+        item.remove()
+    header = []
+    assert abs(s.duration - INCEPTION_SECONDS) < 1e-8
+    bn_start = s.duration
     from zanim_scenes.batch_norm_art import (
         append as prepend_bn,
         PREFIX_SECONDS as BN_SECONDS,
@@ -195,7 +209,7 @@ def build(width=1920, height=1080, fps=60):
     for item in header + bn_handoff:
         item.remove()
     header = []
-    assert abs(s.duration - BN_SECONDS) < 1e-8
+    assert abs(s.duration - bn_start - BN_SECONDS) < 1e-8
     residual_start = s.duration
     from zanim_scenes.residual_art import (
         append as prepend_residual,
