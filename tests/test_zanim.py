@@ -544,3 +544,17 @@ class NativeModelTests(unittest.TestCase):
             self.assertAlmostEqual(output, float(weights @ d.VALUES[:,0]))
         for j in range(3):
             np.testing.assert_allclose(selection(j/3)[1], d.WEIGHTS[j])
+
+    def test_residual_film_batch_matches_each_spatial_sample(self):
+        import numpy as np
+        from zanim_scenes.residual_art import batch
+        from zanim_scenes.models import ep_07_6 as d
+        from zanim_scenes.models import ep_07_7 as dense
+        x, correction, output = batch()
+        np.testing.assert_array_equal(x, dense.INPUT_X.reshape(2,4))
+        for k in range(4):
+            expected = d.residual_block(x[:,k:k+1])
+            np.testing.assert_allclose(correction[:,k], expected['F'].ravel())
+            np.testing.assert_allclose(output[:,k], expected['y'].ravel())
+        self.assertEqual(output.shape, x.shape)
+        np.testing.assert_allclose(output, np.maximum(x+correction,0))

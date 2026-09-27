@@ -183,6 +183,20 @@ def build(width=1920, height=1080, fps=60):
             for i in range(COUNT)
         ]
     )
+    from zanim_scenes.residual_art import (
+        append as prepend_residual,
+        PREFIX_SECONDS as RESIDUAL_SECONDS,
+    )
+
+    residual_handoff = prepend_residual(s, chapter, PALETTE)
+    with s.parallel():
+        for item in header:
+            item.fade_out(duration=0.35)
+    for item in header + residual_handoff:
+        item.remove()
+    header = []
+    assert abs(s.duration - RESIDUAL_SECONDS) < 1e-8
+    dense_start = s.duration
     from zanim_scenes.dense_art import append as prepend_dense, PREFIX_SECONDS
 
     handoff = prepend_dense(s, chapter, rings, PALETTE)
@@ -194,7 +208,7 @@ def build(width=1920, height=1080, fps=60):
     header = []
     for item in handoff:
         item.remove()
-    assert abs(s.duration - PREFIX_SECONDS) < 1e-8
+    assert abs(s.duration - dense_start - PREFIX_SECONDS) < 1e-8
     current = rings.copy()
     edges = []
     for i in range(COUNT):
