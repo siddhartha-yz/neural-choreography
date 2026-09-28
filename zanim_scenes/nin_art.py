@@ -59,8 +59,10 @@ def geometry(u):
     return inputs, np.array(outputs), np.array(anchors)
 
 
-def append(s, chapter, palette):
+def append(s, chapter, palette, incoming=()):
     chapter("网络中的网络 · 07.3", "逐点混合通道，再汇聚整张特征。")
+    for item in incoming:
+        item.remove()
     objects = []
     animations = []
 
@@ -138,7 +140,7 @@ def append(s, chapter, palette):
                 duration=MOVEMENT,
                 easing=Easing.LINEAR,
             )
-            item.opacity(to=0, duration=0)
+            item.opacity(to=0.4 if incoming else 0, duration=0)
             item.opacity(to=0.4, duration=0.6)
             item.fade_out(duration=0.8, at=2.8)
         for j in range(G * G):
@@ -148,8 +150,8 @@ def append(s, chapter, palette):
                 duration=MOVEMENT,
                 easing=Easing.LINEAR,
             )
-            item.opacity(to=0, duration=0)
-            item.fade_in(duration=0.6)
+            item.opacity(to=1 if incoming else 0, duration=0)
+            item.opacity(to=1, duration=0.6)
             item.fade_out(duration=0.8, at=2.8)
     for ch in range(3):
         for a, b in EDGES:
