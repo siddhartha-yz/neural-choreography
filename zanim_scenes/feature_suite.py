@@ -179,9 +179,12 @@ def append(s, chapter, rings, palette):
         sparks.append(stream)
     links = []
     semantic = []
+    accents = []
 
     def note(t, x, y, color):
-        semantic.append(label(s, t, x, y, 0.24, color))
+        item = label(s, t, x, y, 0.24, color)
+        semantic.append(item)
+        accents.append((item, 1.0))
 
     def semantic_line(a, b, color):
         item = s.add(
@@ -195,12 +198,14 @@ def append(s, chapter, rings, palette):
         )
         item.opacity(to=0.42, duration=0)
         semantic.append(item)
+        accents.append((item, 0.42))
         return item
 
     def clear_semantic():
         for item in semantic:
             item.remove()
         semantic.clear()
+        accents.clear()
 
     def ghost_surface(ch, station, values):
         pts = surface(
@@ -256,16 +261,27 @@ def append(s, chapter, rings, palette):
 
     def run(kind, seconds, time, transition=0.20):
         nonlocal current
-        start = current.copy()
+        start_points = current.copy()
 
         @lru_cache(maxsize=32)
         def frame(u):
             xyz, visible = state(kind, u)
             pts = np.array([project(p, time + u * seconds) for p in xyz])
             w = ease(u / transition)
-            return start + w * (pts - start), visible
+            points = start_points + w * (pts - start_points)
+            if kind == "dense" and u < 0.30:
+                # Carry the two residual output sheets into the next input stack.
+                # Crossfade only after they dock; hidden sheets can then reset.
+                for ch in range(2):
+                    target = project(dense_input[ch], time + u * seconds)
+                    points[ch] = start_points[ch] + ease(u / 0.18) * (
+                        target - start_points[ch]
+                    )
+                    visible[ch] = 1 - ease((u - 0.18) / 0.06)
+            return points, visible
 
         ghosts = []
+        dense_input = {}
         streams = []
         if kind == "residual":
             note("x · 直连", -2.5, 3.5, palette[0])
@@ -295,19 +311,16 @@ def append(s, chapter, rings, palette):
             note("保留并拼接", 0, 3.0, palette[2])
             for station, count in ((-5.3, 2), (-0.4, 3)):
                 for ch in range(count):
-                    ghosts.append(
-                        (
-                            ch,
-                            0 if station < -1 else 1,
-                            *ghost_surface(ch, station, dense.STACK_2[ch]),
-                        )
-                    )
+                    pts, items = ghost_surface(ch, station, dense.STACK_2[ch])
+                    if station < -1:
+                        dense_input[ch] = pts
+                    ghosts.append((ch, 0 if station < -1 else 1, pts, items))
             for a, b, count in ((-5.3, -0.4, 2), (-0.4, 5, 3)):
                 for ch in range(count):
                     for k in (0, 4, 8):
-                        start = np.array([a + 0.9, (k - 4) * 0.18 + (ch - 0.5) * 0.22])
-                        end = np.array([b - 0.9, start[1]])
-                        semantic_line(start, end, palette[ch])
+                        source = np.array([a + 0.9, (k - 4) * 0.18 + (ch - 0.5) * 0.22])
+                        end = np.array([b - 0.9, source[1]])
+                        semantic_line(source, end, palette[ch])
                         dot = s.add(
                             Circle(
                                 0.06,
@@ -317,16 +330,34 @@ def append(s, chapter, rings, palette):
                             )
                         )
                         semantic.append(dot)
-                        streams.append((start, end, ch, k, dot, a))
+                        streams.append((source, end, ch, k, dot, a))
         with s.parallel():
+            if kind == "residual":
+                for item in semantic:
+                    item.fade_out(duration=0.65, at=seconds - 0.65)
+            elif kind == "dense":
+                for item, opacity in accents:
+                    item.opacity(to=0, duration=0)
+                    item.opacity(to=opacity, duration=0.65, at=seconds * 0.18)
             for ch, station, pts, items in ghosts:
                 for a, b, item in items:
+                    if kind == "dense":
+                        reveal = 0.18 if station == 0 else 0.24 if ch < 2 else 0.40
+                        duration = 0.06 if station == 0 else 0.16
+                        item.opacity(to=0, duration=0)
+                        item.opacity(
+                            to=1 if b is None else 0.55,
+                            duration=seconds * duration,
+                            at=seconds * reveal,
+                        )
 
                     def ghost_pose(u, ch=ch, station=station, pts=pts, a=a, b=b):
                         pp = project(pts, time + u * seconds)
                         visible = (
                             1
-                            if kind == "residual" or station == 0
+                            if kind == "residual"
+                            else ease((u - 0.18) / 0.06)
+                            if station == 0
                             else ease((u - (0.24 if ch < 2 else 0.40)) / 0.16)
                         )
                         if b is None:
@@ -343,7 +374,7 @@ def append(s, chapter, rings, palette):
             for a, b, ch, k, item, station in streams:
 
                 def transfer(u, a=a, b=b, ch=ch, k=k, station=station):
-                    start = 0.12 if station < -1 else 0.48
+                    start = 0.24 if station < -1 else 0.48
                     q = float(np.clip((u - start - k * 0.006) / 0.24, 0, 1))
                     xy = a + ease(q) * (b - a)
                     return Transform2D.translation(
@@ -379,6 +410,16 @@ def append(s, chapter, rings, palette):
                     item.opacity(to=0, duration=0.7, at=seconds - 0.7)
             for ch in range(4):
                 for (a, b), item in zip(EDGES, mesh[ch]):
+                    if kind == "dense":
+                        if ch < 2:
+                            item.opacity(to=0, duration=seconds * 0.06, at=seconds * 0.18)
+                        else:
+                            item.opacity(to=0, duration=0)
+                        item.opacity(
+                            to=0.3,
+                            duration=seconds * (0.2 if ch < 3 else 0.08),
+                            at=seconds * (0.53 if ch < 3 else 0.73),
+                        )
                     item.transform_function(
                         lambda u, ch=ch, a=a, b=b: (
                             pose(frame(u)[0][ch, a], frame(u)[0][ch, b])
