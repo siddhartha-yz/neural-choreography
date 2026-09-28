@@ -13,6 +13,7 @@ from zanim_scenes.models import ep_07_4 as inception
 from zanim_scenes.models import ep_07_7 as dense
 from zanim_scenes.batch_norm_art import stages
 from zanim_scenes.residual_art import batch
+from zanim_scenes.style import label
 
 PREFIX_SECONDS = 48.0
 G = 9
@@ -95,27 +96,37 @@ def state(kind, p):
             original = sampled(x[channel].reshape(2, 2))
             correction = sampled(f[channel].reshape(2, 2))
             result = sampled(y[channel].reshape(2, 2))
-            split = ease(p / 0.27)
-            join = ease((p - 0.55) / 0.35)
             is_update = ch >= 2
-            lane = (-1.9 if is_update else 1.9) * split * (1 - join)
-            center = np.array([-5.5 + 11 * p, lane, (channel - 0.5) * 0.7])
-            field = (
-                original + (correction - original) * split
-                if is_update
-                else original + (result - original) * join
-            )
-            points = surface(ch, center, 0.45 * math.sin(p * math.pi), field, 1.15)
-            visible[ch] = 1 - join if is_update else 1
+            if not is_update:
+                travel = ease(p / 0.65)
+                center = np.array(
+                    [
+                        -5.8 + 10.3 * travel,
+                        2.5 * math.sin(math.pi * travel),
+                        (channel - 0.5) * 0.7,
+                    ]
+                )
+                field = original + (result - original) * ease((p - 0.88) / 0.1)
+            else:
+                first = ease(p / 0.35)
+                last = ease((p - 0.60) / 0.30)
+                center = np.array(
+                    [
+                        -5.8 + 4.8 * first + 5.5 * last,
+                        -2.1 * first * (1 - last),
+                        (channel - 0.5) * 0.7,
+                    ]
+                )
+                field = original + (correction - original) * ease((p - 0.35) / 0.20)
+                visible[ch] = 1 - ease((p - 0.91) / 0.09)
+            points = surface(ch, center, 0.25, field, 0.85)
         else:
             data = sampled(dense.STACK_2[ch])
-            visible[ch] = 1 if ch < 2 else ease((p - (ch - 2) * 0.35) / 0.25)
+            visible[ch] = ease((p - 0.53) / 0.2) if ch < 3 else ease((p - 0.73) / 0.08)
             center = np.array(
-                [(ch - 1.5) * 2.55, 0.5 * math.sin(ch * 0.8 + p * 2), (ch - 1.5) * 0.35]
+                [5 + (ch - 1.5) * 0.25, (ch - 1.5) * 0.22, (ch - 1.5) * 0.5]
             )
-            points = surface(
-                ch, center, 0.45 + 0.22 * math.sin(p * 3 + ch * 0.3), data, 1.15
-            )
+            points = surface(ch, center, 0.5, data, 1.15)
         points[:, 2] += 0.16 * np.sin(UV[:, 0] * 2.8 + UV[:, 1] * 1.6 + p * 2 * math.pi)
         out.append(points)
     return np.array(out), visible
@@ -166,30 +177,67 @@ def append(s, chapter, rings, palette):
         mesh.append(lines)
         dots.append(cloud)
         sparks.append(stream)
-    # Dense reuse links are made once and activated only in the final movement.
     links = []
-    for target in (2, 3):
-        for source in range(target):
-            for index in (0, 20, 40, 60, 80):
-                item = s.add(
-                    Line(
-                        (0, 0),
-                        (1, 0),
-                        style=Style.outline(palette[source], 0.014),
-                        transform=Transform2D.translation(-30, 0),
-                        z_index=1,
-                    )
+    semantic = []
+
+    def note(t, x, y, color):
+        semantic.append(label(s, t, x, y, 0.24, color))
+
+    def semantic_line(a, b, color):
+        item = s.add(
+            Line(
+                (0, 0),
+                (1, 0),
+                style=Style.outline(color, 0.018),
+                transform=pose(np.array(a), np.array(b)),
+                z_index=1,
+            )
+        )
+        item.opacity(to=0.42, duration=0)
+        semantic.append(item)
+        return item
+
+    def clear_semantic():
+        for item in semantic:
+            item.remove()
+        semantic.clear()
+
+    def ghost_surface(ch, station, values):
+        pts = surface(
+            ch,
+            np.array(
+                [station + (ch - 0.5) * 0.25, (ch - 0.5) * 0.22, (ch - 0.5) * 0.5]
+            ),
+            0.5,
+            sampled(values),
+            1.15,
+        )
+        items = []
+        for a, b in EDGES:
+            item = s.add(
+                Line(
+                    (0, 0),
+                    (1, 0),
+                    style=Style.outline(palette[ch], 0.013),
+                    transform=Transform2D.translation(-30, 0),
+                    z_index=2,
                 )
-                item.opacity(to=0.28, duration=0)
-                spark = s.add(
-                    Circle(
-                        0.047,
-                        style=Style.solid(palette[source]),
-                        transform=Transform2D.translation(-30, 0),
-                        z_index=6,
-                    )
+            )
+            item.opacity(to=0.55, duration=0)
+            semantic.append(item)
+            items.append((a, b, item))
+        for i in range(0, G * G, 4):
+            item = s.add(
+                Circle(
+                    0.035,
+                    style=Style.solid(palette[ch]),
+                    transform=Transform2D.translation(-30, 0),
+                    z_index=5,
                 )
-                links.append((source, target, index, item, spark))
+            )
+            semantic.append(item)
+            items.append((i, None, item))
+        return pts, items
 
     windows = []
     for ch in range(4):
@@ -217,7 +265,94 @@ def append(s, chapter, rings, palette):
             w = ease(u / transition)
             return start + w * (pts - start), visible
 
+        ghosts = []
+        streams = []
+        if kind == "residual":
+            note("x · 直连", -2.5, 3.5, palette[0])
+            note("F(x) · 修正", -1, -3.5, palette[2])
+            note("+", 3.2, 0, palette[2])
+            note("相加", 5, -1.9, palette[0])
+            for ch in range(2):
+                ghosts.append((ch, 0, *ghost_surface(ch, -5.8, dense.INPUT_X[ch])))
+            for top in (True, False):
+                previous = None
+                for q in np.linspace(0, 1, 41):
+                    xy = np.array(
+                        [
+                            -5.8 + 10.3 * q,
+                            2.5 * math.sin(math.pi * q)
+                            if top
+                            else -2.1 * math.sin(math.pi * q),
+                        ]
+                    )
+                    if previous is not None:
+                        semantic_line(previous, xy, palette[0 if top else 2])
+                    previous = xy
+        elif kind == "dense":
+            note("2 通道", -5.5, -2.3, palette[0])
+            note("3 通道", -0.5, -2.3, palette[2])
+            note("4 通道", 4.6, -2.3, palette[3])
+            note("保留并拼接", 0, 3.0, palette[2])
+            for station, count in ((-5.3, 2), (-0.4, 3)):
+                for ch in range(count):
+                    ghosts.append(
+                        (
+                            ch,
+                            0 if station < -1 else 1,
+                            *ghost_surface(ch, station, dense.STACK_2[ch]),
+                        )
+                    )
+            for a, b, count in ((-5.3, -0.4, 2), (-0.4, 5, 3)):
+                for ch in range(count):
+                    for k in (0, 4, 8):
+                        start = np.array([a + 0.9, (k - 4) * 0.18 + (ch - 0.5) * 0.22])
+                        end = np.array([b - 0.9, start[1]])
+                        semantic_line(start, end, palette[ch])
+                        dot = s.add(
+                            Circle(
+                                0.06,
+                                style=Style.solid(palette[ch]),
+                                transform=Transform2D.translation(-30, 0),
+                                z_index=7,
+                            )
+                        )
+                        semantic.append(dot)
+                        streams.append((start, end, ch, k, dot, a))
         with s.parallel():
+            for ch, station, pts, items in ghosts:
+                for a, b, item in items:
+
+                    def ghost_pose(u, ch=ch, station=station, pts=pts, a=a, b=b):
+                        pp = project(pts, time + u * seconds)
+                        visible = (
+                            1
+                            if kind == "residual" or station == 0
+                            else ease((u - (0.24 if ch < 2 else 0.40)) / 0.16)
+                        )
+                        if b is None:
+                            return Transform2D.translation(
+                                *map(float, pp[a])
+                            ) @ Transform2D.scaling(max(0.001, visible))
+                        return pose(pp[a], pp[b]) @ Transform2D.scaling(
+                            1, max(0.001, visible)
+                        )
+
+                    item.transform_function(
+                        ghost_pose, duration=seconds, easing=Easing.LINEAR
+                    )
+            for a, b, ch, k, item, station in streams:
+
+                def transfer(u, a=a, b=b, ch=ch, k=k, station=station):
+                    start = 0.12 if station < -1 else 0.48
+                    q = float(np.clip((u - start - k * 0.006) / 0.24, 0, 1))
+                    xy = a + ease(q) * (b - a)
+                    return Transform2D.translation(
+                        *map(float, xy)
+                    ) @ Transform2D.scaling(max(0.001, math.sin(math.pi * q)))
+
+                item.transform_function(
+                    transfer, duration=seconds, easing=Easing.LINEAR
+                )
             if kind == "inception":
                 for ch, edge, item in windows:
 
@@ -312,6 +447,7 @@ def append(s, chapter, rings, palette):
     run("norm", 11.2, 12)
     chapter("残差网络 · 07.6", "保留直连，叠加修正。")
     run("residual", 11.2, 24)
+    clear_semantic()
     chapter("稠密连接网络 · 07.7", "旧特征保留，新层继续生长。")
     run("dense", 8.05, 36)
     # Continue the feature contours into the existing recurrent aperture.
@@ -336,6 +472,8 @@ def append(s, chapter, rings, palette):
                 (item, initial[j], initial[j + 1], rings[i, j], rings[i, j + 1])
             )
     with s.parallel():
+        for item in semantic:
+            item.fade_out(duration=1.2)
         for group in mesh + dots + sparks:
             for item in group:
                 item.fade_out(duration=1.2)
@@ -357,4 +495,5 @@ def append(s, chapter, rings, palette):
     for *_, line, dot in links:
         line.remove()
         dot.remove()
+    clear_semantic()
     return [item for item, *_ in handoff]
