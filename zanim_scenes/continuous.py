@@ -185,6 +185,17 @@ def build(width=1920, height=1080, fps=60):
     )
     from zanim_scenes.feature_suite import append as feature_suite, PREFIX_SECONDS
 
+    from zanim_scenes.nin_art import append as nin, PREFIX_SECONDS as NIN_SECONDS
+
+    opening = nin(s, chapter, PALETTE)
+    with s.parallel():
+        for item in header:
+            item.fade_out(duration=0.35)
+    for item in header + opening:
+        item.remove()
+    header = []
+    assert abs(s.duration - NIN_SECONDS) < 1e-8
+
     handoff = feature_suite(s, chapter, rings, PALETTE)
     with s.parallel():
         for item in header:
@@ -192,7 +203,7 @@ def build(width=1920, height=1080, fps=60):
     for item in header + handoff:
         item.remove()
     header = []
-    assert abs(s.duration - PREFIX_SECONDS) < 1e-8
+    assert abs(s.duration - PREFIX_SECONDS - NIN_SECONDS) < 1e-8
     current = rings.copy()
     edges = []
     for i in range(COUNT):
