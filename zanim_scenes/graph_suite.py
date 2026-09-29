@@ -163,151 +163,231 @@ def backprop(b, incoming):
 def stability(b, incoming):
     allpoints = []
     for row, mix in enumerate((0.0, 1.0)):
-        z, h, grad, _ = stable.network_at(mix)
+        _, h, grad, grad_x = stable.network_at(mix)
         y = 1.6 - row * 3.2
-        xs = (-5, -1.7, 1.7, 5)
+        xy = np.array([[x, y] for x in (-5, -1.7, 1.7, 5)])
 
-        def loc(u, y=y):
-            return projected([[x, y] for x in xs], u)
+        def loc(u, xy=xy):
+            return projected(xy, u)
 
         allpoints.append(loc)
         for i in range(4):
-            item = b.dot(b.palette[0 if row == 0 else 3], 0.11 + 0.12 * h[i])
+            item = b.dot(b.palette[row * 3], 0.11 + 0.12 * h[i])
             item.opacity(to=1 if incoming else 0, duration=0)
-            item.opacity(to=1, duration=0.5)
+            item.opacity(to=1, duration=0.4)
+            item.opacity(to=0.22, duration=0.7, at=0.7)
             item.transform_function(
                 lambda u, i=i, loc=loc: point(loc(u)[i]),
                 duration=DURATION,
                 easing=Easing.LINEAR,
             )
-            # A narrowed gate depicts the local sigmoid slope.
-            slope = float(stable.sigmoid_prime(np.array([z[i]]))[0])
-            for side in (-1, 1):
-                item = b.line(b.palette[row * 3], 0.018)
+        path = np.vstack(([-6.8, y], xy))
+        amplitudes = np.r_[np.linalg.norm(grad_x), grad]
+        # Identical incoming bundles. Width is sqrt(|gradient|) on both rows.
+        # A whole sheet travels through the chain instead of isolated dots.
+        for lane in range(33):
+            for tail in range(6):
+                item = b.dot(GOLD, 0.038)
 
-                def gate(u, i=i, side=side, loc=loc, slope=slope):
-                    center = loc(u)[i]
-                    return pose(
-                        center + [-0.42, side * 0.52],
-                        center + [0.42, side * (0.035 + 1.8 * slope)],
+                def packet(u, lane=lane, tail=tail, path=path, amplitudes=amplitudes):
+                    t = u * DURATION
+                    progress = np.clip((t - 1.0 - tail * 0.075) / 4.8, 0, 1) * 4
+                    step = min(int(progress), 3)
+                    q = progress - step
+                    i = 4 - step
+                    j = i - 1
+                    gain = math.exp(
+                        (1 - q) * math.log(amplitudes[i]) + q * math.log(amplitudes[j])
                     )
+                    center = path[i] + ease(q) * (path[j] - path[i])
+                    center[1] += (lane / 16 - 1) * 1.1 * math.sqrt(gain)
+                    pp = projected(center[None, :], u)[0]
+                    visible = ease((t - 0.6) / 0.35) * (1 - ease((t - 6.3) / 0.5))
+                    return point(pp, visible * (0.18 + 0.82 * math.sqrt(gain)))
+
+                item.transform_function(packet, duration=DURATION, easing=Easing.LINEAR)
+        for i in range(4):
+            center = xy[i]
+            for side in (-1, 1):
+                item = b.line(b.palette[row * 3], 0.024)
+
+                def gate(u, i=i, side=side, center=center, grad=grad):
+                    # Common area scale; contraction remains directly comparable.
+                    width = 1.1 * math.sqrt(grad[i])
+                    pts = np.array(
+                        [center + [-0.15, side * width], center + [0.15, side * width]]
+                    )
+                    pp = projected(pts, u)
+                    return pose(pp[0], pp[1])
 
                 item.opacity(to=0, duration=0)
-                item.opacity(to=0.65, duration=0.6)
+                item.opacity(to=0.75, duration=0.5)
                 item.transform_function(gate, duration=DURATION, easing=Easing.LINEAR)
-        for i in range(3):
+        # Same explicit linear magnification for both input-gradient norms.
+        radius = 600 * float(np.linalg.norm(grad_x))
+        item = b.add(
+            Circle(
+                radius,
+                style=Style.outline(GOLD, 0.035),
+                transform=Transform2D.translation(-30, 0),
+                z_index=6,
+            )
+        )
+        item.opacity(to=0, duration=0)
+        item.opacity(to=1, duration=0.6, at=5.8)
+        item.transform_function(
+            lambda u, y=y: point(projected(np.array([[-6.8, y]]), u)[0]),
+            duration=DURATION,
+            easing=Easing.LINEAR,
+        )
+        for k in range(24):
+            item = b.dot(GOLD, 0.023)
 
-            def a(u, i=i, loc=loc):
-                return loc(u)[i]
+            def residual(u, k=k, y=y, radius=radius):
+                theta = k * math.tau / 24 + (u * DURATION - 6) * 0.5
+                r = radius * ease((u * DURATION - 5.8) / 0.6)
+                pp = projected(
+                    np.array([[-6.8 + r * math.cos(theta), y + r * math.sin(theta)]]), u
+                )[0]
+                return point(pp, ease((u * DURATION - 5.8) / 0.6))
 
-            def zpos(u, i=i, loc=loc):
-                return loc(u)[i + 1]
-
-            wire(b, a, zpos, b.palette[row * 3])
-            stream(b, a, zpos, 0.3 + i * 0.85, 0.85, b.palette[row * 3], float(h[i]))
-            for k in range(9):
-                item = b.dot(GOLD, 0.15)
-
-                def reverse(u, i=i, k=k, loc=loc, grad=grad):
-                    q = float(
-                        np.clip(
-                            (u * DURATION - 3.6 - (2 - i) * 1.05 - k * 0.055) / 1.05,
-                            0,
-                            1,
-                        )
-                    )
-                    a = loc(u)[i + 1]
-                    z = loc(u)[i]
-                    # Monotone fourth-root display gain makes tiny gradients
-                    # visible; it does not imply their true numeric ratio.
-                    gain = ((1 - q) * grad[i + 1] + q * grad[i]) ** 0.25
-                    return point(a + ease(q) * (z - a), gain * math.sin(math.pi * q))
-
-                item.transform_function(
-                    reverse, duration=DURATION, easing=Easing.LINEAR
-                )
-    b.note("饱和初始化", -6.9, 2.9, color=b.palette[0])
-    b.note("较小权重", -6.9, -2.9, color=b.palette[3])
+            item.transform_function(residual, duration=DURATION, easing=Easing.LINEAR)
+    b.note("饱和初始化", 0, 3.3, color=b.palette[0])
+    b.note("较小权重", 0, -3.3, color=b.palette[3])
+    b.note("输入端 · 同倍率 ×600", -5.5, -0.05, start=5.8, color=GOLD)
     return lambda: np.concatenate([p(1) for p in allpoints])
 
 
+CALL_INPUTS = np.array([[1.0, 0.5], [-0.5, 1.2], [0.2, -1.0]])
+
+
+def block_calls():
+    z = CALL_INPUTS @ blocks.WEIGHTS_1.T + blocks.BIAS_1.ravel()
+    h = np.maximum(z, 0)
+    return z, h, h @ blocks.WEIGHTS_2.T + blocks.BIAS_2.ravel()
+
+
 def nested(b, incoming):
-    inp = nodes(
-        b, [[-6, 1.1], [-6, -1.1]], blocks.INPUT_X, b.palette[0], incoming=incoming
-    )
-    pre = nodes(
-        b,
-        [[-2, 1.25], [-2, 0], [-2, -1.25]],
-        blocks.PREACTIVATIONS,
-        b.palette[1],
-        start=0.8,
-    )
-    hidden = nodes(
-        b, [[0.4, 1.25], [0.4, 0], [0.4, -1.25]], blocks.HIDDEN, b.palette[2], start=2.5
-    )
-    out = nodes(b, [[4.3, 1], [4.3, -1]], blocks.OUTPUTS, b.palette[3], start=4.6)
-    for x0, x1, y, color, start in [
-        (-4.1, 5.4, 3.1, b.palette[0], 0),
-        (-3.5, 1.5, 2.4, b.palette[2], 0.3),
-        (-2.8, -1.1, 1.8, b.palette[1], 0.6),
-        (-0.4, 1.1, 1.8, b.palette[2], 0.8),
-        (3.4, 5.1, 1.8, b.palette[3], 1),
-    ]:
-        corners = np.array([[x0, -y], [x1, -y], [x1, y], [x0, y]])
+    pre, hidden, outputs = block_calls()
+    starts = (0.35, 2.9, 5.45)
+    colors = (b.palette[0], b.palette[3], GOLD)
+
+    def activity(u):
+        t = u * DURATION
+        return max(
+            math.sin(math.pi * np.clip((t - start - 0.45) / 1.3, 0, 1))
+            for start in starts
+        )
+
+    def corners(u):
+        scale = (1 - 0.28 * ease((u * DURATION - 2.05) / 0.6)) * (
+            1 + 0.045 * activity(u)
+        )
+        return projected(
+            np.array([[-2.9, -2.1], [2.9, -2.1], [2.9, 2.1], [-2.9, 2.1]]) * scale, u
+        )
+
+    for e in range(4):
+        item = b.line(b.palette[2], 0.035)
+        item.opacity(to=0, duration=0)
+        item.opacity(to=0.85, duration=0.4)
+        item.transform_function(
+            lambda u, e=e: pose(corners(u)[e], corners(u)[(e + 1) % 4]),
+            duration=DURATION,
+            easing=Easing.LINEAR,
+        )
+    # First invocation opens the internals; they fold into the same reusable unit.
+    for stage, x in enumerate((-1.8, 0, 1.8)):
+        box = np.array(
+            [[x - 0.55, -1.3], [x + 0.55, -1.3], [x + 0.55, 1.3], [x - 0.55, 1.3]]
+        )
         for e in range(4):
-            item = b.line(color, 0.016)
+            item = b.line(b.palette[stage], 0.02)
             item.opacity(to=0, duration=0)
-            item.opacity(to=0.45, duration=0.7, at=start)
+            item.opacity(to=0.65, duration=0.4, at=0.3)
+            item.opacity(to=0.35, duration=0.6, at=2.05)
+
+            def folded(u, e=e, box=box):
+                q = ease((u * DURATION - 2.05) / 0.6)
+                pp = projected(box * (1 - 0.7 * q), u)
+                return pose(pp[e], pp[(e + 1) % 4])
+
+            item.transform_function(folded, duration=DURATION, easing=Easing.LINEAR)
+    b.note("Linear   →   ReLU   →   Linear", 0, -2.7, end=2.65)
+    b.note("同一个块 B", 0, 2.75)
+    b.note("B(x)", 0, 0.95, start=2.7)
+    parked = []
+    for call, (start, color) in enumerate(zip(starts, colors)):
+        y = 1.5 - call * 1.5
+        result = np.array([[6, y + 0.23], [6, y - 0.23]])
+        parked.append(projected(result, 1))
+        for j, value in enumerate(CALL_INPUTS[call]):
+            item = b.dot(color, 0.1 + 0.06 * abs(value))
+            item.opacity(to=1 if incoming and call == 0 else 0, duration=0)
+            item.opacity(to=1, duration=0.25, at=0 if call == 0 else start - 0.2)
+            item.fade_out(duration=0.3, at=start + 1.0)
+
+            def entering(u, j=j, start=start):
+                q = ease((u * DURATION - start) / 0.85)
+                source = np.array([-6, 1.1 - j * 2.2])
+                target = np.array([-1.8, 0.5 - j])
+                return point(projected((source + q * (target - source))[None, :], u)[0])
+
+            item.transform_function(entering, duration=DURATION, easing=Easing.LINEAR)
+        # Three successive calls illuminate the SAME boundary and ports.
+        for e in range(4):
+            item = b.line(color, 0.065)
+            item.opacity(to=0, duration=0)
+            item.opacity(to=0.9, duration=0.18, at=start + 0.55 + e * 0.11)
+            item.fade_out(duration=0.3, at=start + 1.35)
             item.transform_function(
-                lambda u, e=e, corners=corners: pose(
-                    projected(corners, u)[e], projected(corners, u)[(e + 1) % 4]
-                ),
+                lambda u, e=e: pose(corners(u)[e], corners(u)[(e + 1) % 4]),
                 duration=DURATION,
                 easing=Easing.LINEAR,
             )
-    for i in range(2):
         for j in range(3):
+            if hidden[call, j] == 0:
+                continue
+            for k in range(6):
+                item = b.dot(color, 0.035 + 0.03 * hidden[call, j])
 
-            def a(u, i=i):
-                return inp(u)[i]
+                def inside(u, j=j, k=k, start=start):
+                    q = np.clip((u * DURATION - start - 0.75 - k * 0.025) / 0.65, 0, 1)
+                    pp = projected(
+                        np.array(
+                            [
+                                [
+                                    -1.8 + 3.6 * ease(q),
+                                    (1 - j) * 0.55 * (1 - 0.4 * math.sin(math.pi * q)),
+                                ]
+                            ]
+                        ),
+                        u,
+                    )[0]
+                    return point(pp, math.sin(math.pi * q))
 
-            def z(u, j=j):
-                return pre(u)[j]
+                item.transform_function(inside, duration=DURATION, easing=Easing.LINEAR)
+        for j, value in enumerate(outputs[call]):
+            item = b.dot(color, 0.1 + 0.06 * abs(value))
+            item.opacity(to=0, duration=0)
+            item.opacity(to=1, duration=0.25, at=start + 1.35)
 
-            wire(b, a, z, b.palette[0])
-            stream(b, a, z, 0.6, 1.3, b.palette[0], blocks.WEIGHTS_1[j, i])
-    for j in range(3):
+            def returned(u, j=j, start=start, result=result):
+                q = ease((u * DURATION - start - 1.35) / 0.75)
+                source = np.array([1.8, 0.4 - j * 0.8])
+                pp = source + q * (result[j] - source)
+                return point(projected(pp[None, :], u)[0])
 
-        def a(u, j=j):
-            return pre(u)[j]
-
-        def z(u, j=j):
-            return hidden(u)[j]
-
-        wire(b, a, z, b.palette[2])
-        stream(b, a, z, 2.1, 1.2, b.palette[2], blocks.PREACTIVATIONS[j, 0])
-        for i in range(2):
-
-            def a(u, j=j):
-                return hidden(u)[j]
-
-            def z(u, i=i):
-                return out(u)[i]
-
-            wire(b, a, z, b.palette[3])
-            stream(
-                b,
-                a,
-                z,
-                3.7,
-                1.5,
-                b.palette[3],
-                blocks.HIDDEN[j, 0] * blocks.WEIGHTS_2[i, j],
-            )
-    b.note("Sequential", 0.5, 3.5)
-    b.note("块", -1, 2.65)
-    b.note("ReLU", 0.4, -2.1)
-    return lambda: out(1)
+            item.transform_function(returned, duration=DURATION, easing=Easing.LINEAR)
+        b.note(
+            f"第 {call + 1} 次调用",
+            0,
+            -2.7,
+            start=max(2.65, start) if call else 0,
+            end=start + 2.3,
+            color=color,
+        ) if call else None
+    return lambda: np.concatenate(parked)
 
 
 def append(s, chapter, palette, kind, incoming=()):
