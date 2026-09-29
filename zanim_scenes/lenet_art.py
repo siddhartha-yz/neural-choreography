@@ -63,8 +63,10 @@ def connections():
     return edges
 
 
-def append(s, chapter, palette):
+def append(s, chapter, palette, incoming=()):
     chapter("LeNet · 卷积神经网络 · 06.6", "局部提取，逐级汇聚，连接输出。")
+    for item in incoming:
+        item.remove()
     objects = []
     queue = []
 
@@ -136,7 +138,7 @@ def append(s, chapter, palette):
         ]
         for a, b in edges:
             item = line(color)
-            item.opacity(to=0, duration=0)
+            item.opacity(to=0.32 if incoming and stage == 0 else 0, duration=0)
             item.opacity(to=0.32, duration=0.6, at=arrivals[stage])
             item.transform_function(
                 lambda u, stage=stage, a=a, b=b: pose(
@@ -147,8 +149,10 @@ def append(s, chapter, palette):
             )
         for j, value in enumerate(data.ravel()):
             item = dot(color, 0.033 + 0.025 * min(2, abs(float(value))))
-            item.opacity(to=0, duration=0)
-            item.fade_in(duration=0.6, at=arrivals[stage] + j / max(1, n * n) * 0.5)
+            item.opacity(to=1 if incoming and stage == 0 else 0, duration=0)
+            item.opacity(
+                to=1, duration=0.6, at=arrivals[stage] + j / max(1, n * n) * 0.5
+            )
             item.transform_function(
                 lambda u, stage=stage, j=j: point(frame(u)[stage][j]),
                 duration=8.4,

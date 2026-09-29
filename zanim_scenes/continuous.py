@@ -191,14 +191,31 @@ def build(width=1920, height=1080, fps=60):
 
     from zanim_scenes.lenet_art import append as lenet, PREFIX_SECONDS as LENET_SECONDS
 
-    first = lenet(s, chapter, PALETTE)
+    from zanim_scenes.conv_suite import (
+        append as conv_study,
+        KINDS,
+        PREFIX_SECONDS as CONV_SECONDS,
+    )
+
+    carry = []
+    for kind in KINDS:
+        carry = conv_study(s, chapter, PALETTE, kind, incoming=carry)
+        with s.parallel():
+            for item in header:
+                item.fade_out(duration=0.35)
+        for item in header:
+            item.remove()
+        header = []
+    assert abs(s.duration - CONV_SECONDS) < 1e-8
+
+    first = lenet(s, chapter, PALETTE, incoming=carry)
     with s.parallel():
         for item in header:
             item.fade_out(duration=0.35)
     for item in header:
         item.remove()
     header = []
-    assert abs(s.duration - LENET_SECONDS) < 1e-8
+    assert abs(s.duration - LENET_SECONDS - CONV_SECONDS) < 1e-8
 
     previous = vgg(s, chapter, PALETTE, incoming=first)
     with s.parallel():
@@ -207,7 +224,7 @@ def build(width=1920, height=1080, fps=60):
     for item in header:
         item.remove()
     header = []
-    assert abs(s.duration - VGG_SECONDS - LENET_SECONDS) < 1e-8
+    assert abs(s.duration - VGG_SECONDS - LENET_SECONDS - CONV_SECONDS) < 1e-8
 
     opening = nin(s, chapter, PALETTE, incoming=previous)
     with s.parallel():
@@ -216,7 +233,10 @@ def build(width=1920, height=1080, fps=60):
     for item in header + opening:
         item.remove()
     header = []
-    assert abs(s.duration - NIN_SECONDS - VGG_SECONDS - LENET_SECONDS) < 1e-8
+    assert (
+        abs(s.duration - NIN_SECONDS - VGG_SECONDS - LENET_SECONDS - CONV_SECONDS)
+        < 1e-8
+    )
 
     handoff = feature_suite(s, chapter, rings, PALETTE)
     with s.parallel():
@@ -225,7 +245,17 @@ def build(width=1920, height=1080, fps=60):
     for item in header + handoff:
         item.remove()
     header = []
-    assert abs(s.duration - PREFIX_SECONDS - NIN_SECONDS - VGG_SECONDS - LENET_SECONDS) < 1e-8
+    assert (
+        abs(
+            s.duration
+            - PREFIX_SECONDS
+            - NIN_SECONDS
+            - VGG_SECONDS
+            - LENET_SECONDS
+            - CONV_SECONDS
+        )
+        < 1e-8
+    )
     current = rings.copy()
     edges = []
     for i in range(COUNT):
