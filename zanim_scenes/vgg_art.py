@@ -58,8 +58,10 @@ def geometry(u):
     return points, va + (vb - va) * v
 
 
-def append(s, chapter, palette):
+def append(s, chapter, palette, incoming=()):
     chapter("VGG · 使用块的网络 · 07.2", "卷积保留尺寸，池化收束空间。")
+    for item in incoming:
+        item.remove()
     objects = []
     queue = []
 
@@ -128,7 +130,7 @@ def append(s, chapter, palette):
                 item.opacity(to=0, duration=0)
                 item.opacity(to=0.32, duration=1.5, at=0 if ch == 1 else 4.2)
             else:
-                item.opacity(to=0, duration=0)
+                item.opacity(to=0.32 if incoming else 0, duration=0)
                 item.opacity(to=0.32, duration=0.5)
             item.transform_function(
                 lambda u, ch=ch, a=a, b=b: pose(frame(u)[0][ch, a], frame(u)[0][ch, b]),
@@ -137,8 +139,10 @@ def append(s, chapter, palette):
             )
         for j in range(64):
             item = dot(palette[ch])
-            item.opacity(to=0, duration=0)
-            item.fade_in(duration=0.5 if ch == 0 else 1.5, at=0 if ch < 2 else 4.2)
+            item.opacity(to=1 if incoming and ch == 0 else 0, duration=0)
+            item.opacity(
+                to=1, duration=0.5 if ch == 0 else 1.5, at=0 if ch < 2 else 4.2
+            )
             item.transform_function(
                 lambda u, ch=ch, j=j: point(frame(u)[0][ch, j], frame(u)[1][ch]),
                 duration=8.4,
