@@ -115,6 +115,11 @@ def ribbons(b, state, colors, copies, incoming):
             for phase in range(2):
                 for tail in range(4):
                     item = b.dot(color, 0.034)
+                    if incoming and copies == 2:
+                        # The new folded-grid handoff already carries the curves.
+                        # Bring in their travelers without a one-frame flash.
+                        item.opacity(to=0, duration=0)
+                        item.fade_in(duration=0.4)
 
                     def travel(u, band=band, lane=lane, phase=phase, tail=tail):
                         q = (u * 1.35 + phase / 2 - tail * 0.005 + lane * 0.017) % 1

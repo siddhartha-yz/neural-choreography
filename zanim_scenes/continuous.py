@@ -209,7 +209,23 @@ def build(width=1920, height=1080, fps=60):
         PREFIX_SECONDS as REGULARIZATION_SECONDS,
     )
 
+    from zanim_scenes.foundation_art import (
+        append as foundation,
+        KINDS as FOUNDATION_KINDS,
+        PREFIX_SECONDS as FOUNDATION_SECONDS,
+    )
+
     carry = []
+    for kind in FOUNDATION_KINDS:
+        carry = foundation(s, chapter, PALETTE, kind, incoming=carry)
+        with s.parallel():
+            for item in header:
+                item.fade_out(duration=0.35)
+        for item in header:
+            item.remove()
+        header = []
+    assert abs(s.duration - FOUNDATION_SECONDS) < 1e-8
+
     for kind in REGULARIZATION_KINDS:
         carry = regularization(s, chapter, PALETTE, kind, incoming=carry)
         with s.parallel():
@@ -218,7 +234,7 @@ def build(width=1920, height=1080, fps=60):
         for item in header:
             item.remove()
         header = []
-    assert abs(s.duration - REGULARIZATION_SECONDS) < 1e-8
+    assert abs(s.duration - FOUNDATION_SECONDS - REGULARIZATION_SECONDS) < 1e-8
 
     for kind in GRAPH_KINDS:
         carry = graph_study(s, chapter, PALETTE, kind, incoming=carry)
@@ -228,7 +244,10 @@ def build(width=1920, height=1080, fps=60):
         for item in header:
             item.remove()
         header = []
-    assert abs(s.duration - REGULARIZATION_SECONDS - GRAPH_SECONDS) < 1e-8
+    assert (
+        abs(s.duration - FOUNDATION_SECONDS - REGULARIZATION_SECONDS - GRAPH_SECONDS)
+        < 1e-8
+    )
 
     for kind in KINDS:
         carry = conv_study(s, chapter, PALETTE, kind, incoming=carry)
@@ -239,7 +258,14 @@ def build(width=1920, height=1080, fps=60):
             item.remove()
         header = []
     assert (
-        abs(s.duration - REGULARIZATION_SECONDS - CONV_SECONDS - GRAPH_SECONDS) < 1e-8
+        abs(
+            s.duration
+            - FOUNDATION_SECONDS
+            - REGULARIZATION_SECONDS
+            - CONV_SECONDS
+            - GRAPH_SECONDS
+        )
+        < 1e-8
     )
 
     first = lenet(s, chapter, PALETTE, incoming=carry)
@@ -253,6 +279,7 @@ def build(width=1920, height=1080, fps=60):
         abs(
             s.duration
             - REGULARIZATION_SECONDS
+            - FOUNDATION_SECONDS
             - LENET_SECONDS
             - CONV_SECONDS
             - GRAPH_SECONDS
@@ -271,6 +298,7 @@ def build(width=1920, height=1080, fps=60):
         abs(
             s.duration
             - REGULARIZATION_SECONDS
+            - FOUNDATION_SECONDS
             - VGG_SECONDS
             - LENET_SECONDS
             - CONV_SECONDS
@@ -295,6 +323,7 @@ def build(width=1920, height=1080, fps=60):
             - CONV_SECONDS
             - GRAPH_SECONDS
             - REGULARIZATION_SECONDS
+            - FOUNDATION_SECONDS
         )
         < 1e-8
     )
@@ -316,6 +345,7 @@ def build(width=1920, height=1080, fps=60):
             - CONV_SECONDS
             - GRAPH_SECONDS
             - REGULARIZATION_SECONDS
+            - FOUNDATION_SECONDS
         )
         < 1e-8
     )
