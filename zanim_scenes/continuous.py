@@ -203,7 +203,23 @@ def build(width=1920, height=1080, fps=60):
         PREFIX_SECONDS as GRAPH_SECONDS,
     )
 
+    from zanim_scenes.regularization_suite import (
+        append as regularization,
+        KINDS as REGULARIZATION_KINDS,
+        PREFIX_SECONDS as REGULARIZATION_SECONDS,
+    )
+
     carry = []
+    for kind in REGULARIZATION_KINDS:
+        carry = regularization(s, chapter, PALETTE, kind, incoming=carry)
+        with s.parallel():
+            for item in header:
+                item.fade_out(duration=0.35)
+        for item in header:
+            item.remove()
+        header = []
+    assert abs(s.duration - REGULARIZATION_SECONDS) < 1e-8
+
     for kind in GRAPH_KINDS:
         carry = graph_study(s, chapter, PALETTE, kind, incoming=carry)
         with s.parallel():
@@ -212,7 +228,7 @@ def build(width=1920, height=1080, fps=60):
         for item in header:
             item.remove()
         header = []
-    assert abs(s.duration - GRAPH_SECONDS) < 1e-8
+    assert abs(s.duration - REGULARIZATION_SECONDS - GRAPH_SECONDS) < 1e-8
 
     for kind in KINDS:
         carry = conv_study(s, chapter, PALETTE, kind, incoming=carry)
@@ -222,7 +238,9 @@ def build(width=1920, height=1080, fps=60):
         for item in header:
             item.remove()
         header = []
-    assert abs(s.duration - CONV_SECONDS - GRAPH_SECONDS) < 1e-8
+    assert (
+        abs(s.duration - REGULARIZATION_SECONDS - CONV_SECONDS - GRAPH_SECONDS) < 1e-8
+    )
 
     first = lenet(s, chapter, PALETTE, incoming=carry)
     with s.parallel():
@@ -231,7 +249,16 @@ def build(width=1920, height=1080, fps=60):
     for item in header:
         item.remove()
     header = []
-    assert abs(s.duration - LENET_SECONDS - CONV_SECONDS - GRAPH_SECONDS) < 1e-8
+    assert (
+        abs(
+            s.duration
+            - REGULARIZATION_SECONDS
+            - LENET_SECONDS
+            - CONV_SECONDS
+            - GRAPH_SECONDS
+        )
+        < 1e-8
+    )
 
     previous = vgg(s, chapter, PALETTE, incoming=first)
     with s.parallel():
@@ -241,7 +268,14 @@ def build(width=1920, height=1080, fps=60):
         item.remove()
     header = []
     assert (
-        abs(s.duration - VGG_SECONDS - LENET_SECONDS - CONV_SECONDS - GRAPH_SECONDS)
+        abs(
+            s.duration
+            - REGULARIZATION_SECONDS
+            - VGG_SECONDS
+            - LENET_SECONDS
+            - CONV_SECONDS
+            - GRAPH_SECONDS
+        )
         < 1e-8
     )
 
@@ -260,6 +294,7 @@ def build(width=1920, height=1080, fps=60):
             - LENET_SECONDS
             - CONV_SECONDS
             - GRAPH_SECONDS
+            - REGULARIZATION_SECONDS
         )
         < 1e-8
     )
@@ -280,6 +315,7 @@ def build(width=1920, height=1080, fps=60):
             - LENET_SECONDS
             - CONV_SECONDS
             - GRAPH_SECONDS
+            - REGULARIZATION_SECONDS
         )
         < 1e-8
     )
