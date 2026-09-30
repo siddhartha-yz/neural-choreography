@@ -211,3 +211,6 @@ def append(s, old, chapter):
 
             apply(item, flowing, 10.8)
     s.wait(0.8)
+    from zanim_scenes.finale_art import append as append_finale
+
+    append_finale(s, objects, chapter)

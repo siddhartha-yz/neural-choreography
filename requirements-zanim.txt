@@ -1,5 +1,4 @@
-# Published upstream release wheels. The repository HEAD advertises rc2,
-# but the release actually downloaded and verified for this migration is rc1.
+# Verified wheels for this complete film; keep rc1 until renderer parity is checked.
 zanim @ https://github.com/zjwqsd/zanim/releases/download/v0.7.0rc1/zanim-0.7.0rc1-py3-none-manylinux1_x86_64.manylinux_2_5_x86_64.whl#sha256=bde86ab90aa566d89644a357bbcff3c14b6855bee7580fb4b60a5fdc8773b704 ; sys_platform == "linux" and platform_machine == "x86_64"
 zanim @ https://github.com/zjwqsd/zanim/releases/download/v0.7.0rc1/zanim-0.7.0rc1-py3-none-macosx_10_13_universal2.whl#sha256=4102ffdad66999ab79cf2b9095624302cb82b6487d69cece2baf259b5a49dbc1 ; sys_platform == "darwin"
 zanim @ https://github.com/zjwqsd/zanim/releases/download/v0.7.0rc1/zanim-0.7.0rc1-py3-none-win_amd64.whl#sha256=2d0822e1ddc6c8ba29a0bdd49c98eceff683deea87d540f035ea9d0c70123fac ; sys_platform == "win32" and platform_machine == "AMD64"

@@ -28,8 +28,8 @@ EDGES = [(r * GX + j, r * GX + j + 1) for r in range(GY) for j in range(GX - 1)]
 TITLES = ("线性回归 · 03.1", "Softmax 回归 · 03.4", "多层感知机 · 04.1")
 SUBTITLES = (
     "小批量误差推动同一条拟合曲带。",
-    "三种响应，共同分配一个整体。",
-    "变换输入，ReLU 折出新的形状。",
+    "同除总量，归一为一个整体。",
+    "全连接汇入，激活后再分发。",
 )
 
 
@@ -107,8 +107,10 @@ def lattice_projection(values, stage, u=0):
 def initial(kind, palette):
     if kind == "softmax":
         return soft_inputs(), np.array([0.12, 0.085]), [palette[0]] * 2, ()
-    points = lattice_projection(INPUTS, 0)
-    return points, np.full(len(points), 0.032), [palette[0]] * len(points), EDGES
+    from zanim_scenes.classification_art import network_nodes
+
+    points = network_nodes(0)
+    return points, np.array([0.12, 0.085]), [palette[0]] * 2, ()
 
 
 def linear_draw(b, incoming):
@@ -497,12 +499,14 @@ def mlp_draw(b, incoming):
 
 
 def append(s, chapter, palette, kind, incoming=()):
+    from zanim_scenes.classification_art import softmax, mlp
+
     i = KINDS.index(kind)
     chapter(TITLES[i], SUBTITLES[i])
     for item in incoming:
         item.remove()
     b = Stage(s, palette)
-    end = (linear_draw, softmax_draw, mlp_draw)[i](b, bool(incoming))
+    end = (linear_draw, softmax, mlp)[i](b, bool(incoming))
     b.play()
     source = end()
     old = list(b.objects)
@@ -513,16 +517,14 @@ def append(s, chapter, palette, kind, incoming=()):
         from zanim_scenes.regularization_suite import initial as fitting_initial
 
         target, _, _ = fitting_initial("capacity", palette)
-        grid = source.reshape(GY, GX, 2)
+        # The two outputs unfold into the following pair of fitting ribbons.
+        # This is a compositional fan-out, not a numerical model connection.
         curves = np.array(
             [
                 np.stack(
                     [
-                        np.interp(
-                            np.linspace(0, GX - 1, SAMPLES),
-                            np.arange(GX),
-                            grid[row, :, axis],
-                        )
+                        np.full(SAMPLES, source[row % len(source), axis])
+                        + (np.linspace(-1, 1, SAMPLES) * 0.45 if axis == 0 else 0)
                         for axis in range(2)
                     ],
                     -1,

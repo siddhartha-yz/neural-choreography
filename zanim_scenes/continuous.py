@@ -148,11 +148,15 @@ def memory_paths(phase=0.0):
 
 def build(width=1920, height=1080, fps=60):
     s = Scene(canvas=Canvas(width, height, width / 19.2), fps=fps)
+    s.chapter_marks = []
     rect(s, 0, 0, 19.2, 10.8, Color(0, 0, 0), -100)
     header = []
 
     def chapter(title, subtitle):
         nonlocal header
+        s.chapter_marks.append(
+            {"title": title, "subtitle": subtitle, "start": s.duration}
+        )
         if header:
             with s.parallel():
                 for item in header:
@@ -484,4 +488,13 @@ def build(width=1920, height=1080, fps=60):
     from zanim_scenes.gated_art import append
 
     append(s, current, edges, chapter)
+    with s.parallel():
+        for item in header:
+            item.fade_out(duration=0.8)
+    for item in header:
+        item.remove()
+    title = label(s, "点还在动", 0, 2.25, 0.30, Color(217, 226, 233))
+    title.opacity(to=0, duration=0)
+    title.fade_in(duration=0.8)
+    s.wait(1.6)
     return s

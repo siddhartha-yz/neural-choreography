@@ -71,7 +71,9 @@ def review(video_path: Path, output: Path, profile: str, requested: list[float] 
         target = output / name
         target.unlink(missing_ok=True)
         subprocess.run([
-            "ffmpeg", "-v", "error", "-y", "-i", str(video_path), "-ss", f"{timestamp:.9f}",
+            # Accurate input seek decodes from the preceding keyframe. The
+            # full-file decode above still checks every frame for corruption.
+            "ffmpeg", "-v", "error", "-y", "-ss", f"{timestamp:.9f}", "-i", str(video_path),
             "-frames:v", "1", "-vf", f"scale={min(frame_width, video['width'])}:-2", str(target)
         ], check=True)
         if not target.exists() or target.stat().st_size == 0:
