@@ -8,6 +8,7 @@
 - [完整目录](CATALOG.md)
 - [时间线、机制与制作记录](docs/CONTINUOUS_STUDY.md)
 - [创作约定](docs/CREATIVE_PRINCIPLES.md)
+- [原创配乐试听与复现](docs/SOUNDTRACK.md)：先制作两分钟音画草稿，已发布的静音整片保留。
 - [第 23 版三十段制作记录](docs/archive/CONTINUOUS_STUDY_V23.md)
 
 本版保留已有连续片段，补齐注意力、优化器、计算机视觉与语言后段。Softmax 明确展示三个正响应共同除以总量、总长收为一；多层感知机采用 2→4→2 全连接图，信号汇入、ReLU 归零和再分发都发生在连接结构上。片尾收束到与开场呼应的粒子环。
