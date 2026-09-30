@@ -15,7 +15,7 @@ TITLES = ("正向与反向传播 · 04.7", "数值稳定性与初始化 · 04.8"
 SUBTITLES = (
     "沿图向前，沿原路回传。",
     "局部导数连乘，决定回传强度。",
-    "层嵌入块，块组成网络。",
+    "输入触发执行，结果返回调用处。",
 )
 
 
@@ -268,126 +268,9 @@ def block_calls():
 
 
 def nested(b, incoming):
-    pre, hidden, outputs = block_calls()
-    starts = (0.35, 2.9, 5.45)
-    colors = (b.palette[0], b.palette[3], GOLD)
+    from zanim_scenes.block_invocation_art import draw
 
-    def activity(u):
-        t = u * DURATION
-        return max(
-            math.sin(math.pi * np.clip((t - start - 0.45) / 1.3, 0, 1))
-            for start in starts
-        )
-
-    def corners(u):
-        scale = (1 - 0.28 * ease((u * DURATION - 2.05) / 0.6)) * (
-            1 + 0.045 * activity(u)
-        )
-        return projected(
-            np.array([[-2.9, -2.1], [2.9, -2.1], [2.9, 2.1], [-2.9, 2.1]]) * scale, u
-        )
-
-    for e in range(4):
-        item = b.line(b.palette[2], 0.035)
-        item.opacity(to=0, duration=0)
-        item.opacity(to=0.85, duration=0.4)
-        item.transform_function(
-            lambda u, e=e: pose(corners(u)[e], corners(u)[(e + 1) % 4]),
-            duration=DURATION,
-            easing=Easing.LINEAR,
-        )
-    # First invocation opens the internals; they fold into the same reusable unit.
-    for stage, x in enumerate((-1.8, 0, 1.8)):
-        box = np.array(
-            [[x - 0.55, -1.3], [x + 0.55, -1.3], [x + 0.55, 1.3], [x - 0.55, 1.3]]
-        )
-        for e in range(4):
-            item = b.line(b.palette[stage], 0.02)
-            item.opacity(to=0, duration=0)
-            item.opacity(to=0.65, duration=0.4, at=0.3)
-            item.opacity(to=0.35, duration=0.6, at=2.05)
-
-            def folded(u, e=e, box=box):
-                q = ease((u * DURATION - 2.05) / 0.6)
-                pp = projected(box * (1 - 0.7 * q), u)
-                return pose(pp[e], pp[(e + 1) % 4])
-
-            item.transform_function(folded, duration=DURATION, easing=Easing.LINEAR)
-    b.note("Linear   →   ReLU   →   Linear", 0, -2.7, end=2.65)
-    b.note("同一个块 B", 0, 2.75)
-    b.note("B(x)", 0, 0.95, start=2.7)
-    parked = []
-    for call, (start, color) in enumerate(zip(starts, colors)):
-        y = 1.5 - call * 1.5
-        result = np.array([[6, y + 0.23], [6, y - 0.23]])
-        parked.append(projected(result, 1))
-        for j, value in enumerate(CALL_INPUTS[call]):
-            item = b.dot(color, 0.1 + 0.06 * abs(value))
-            item.opacity(to=1 if incoming and call == 0 else 0, duration=0)
-            item.opacity(to=1, duration=0.25, at=0 if call == 0 else start - 0.2)
-            item.fade_out(duration=0.3, at=start + 1.0)
-
-            def entering(u, j=j, start=start):
-                q = ease((u * DURATION - start) / 0.85)
-                source = np.array([-6, 1.1 - j * 2.2])
-                target = np.array([-1.8, 0.5 - j])
-                return point(projected((source + q * (target - source))[None, :], u)[0])
-
-            item.transform_function(entering, duration=DURATION, easing=Easing.LINEAR)
-        # Three successive calls illuminate the SAME boundary and ports.
-        for e in range(4):
-            item = b.line(color, 0.065)
-            item.opacity(to=0, duration=0)
-            item.opacity(to=0.9, duration=0.18, at=start + 0.55 + e * 0.11)
-            item.fade_out(duration=0.3, at=start + 1.35)
-            item.transform_function(
-                lambda u, e=e: pose(corners(u)[e], corners(u)[(e + 1) % 4]),
-                duration=DURATION,
-                easing=Easing.LINEAR,
-            )
-        for j in range(3):
-            if hidden[call, j] == 0:
-                continue
-            for k in range(6):
-                item = b.dot(color, 0.035 + 0.03 * hidden[call, j])
-
-                def inside(u, j=j, k=k, start=start):
-                    q = np.clip((u * DURATION - start - 0.75 - k * 0.025) / 0.65, 0, 1)
-                    pp = projected(
-                        np.array(
-                            [
-                                [
-                                    -1.8 + 3.6 * ease(q),
-                                    (1 - j) * 0.55 * (1 - 0.4 * math.sin(math.pi * q)),
-                                ]
-                            ]
-                        ),
-                        u,
-                    )[0]
-                    return point(pp, math.sin(math.pi * q))
-
-                item.transform_function(inside, duration=DURATION, easing=Easing.LINEAR)
-        for j, value in enumerate(outputs[call]):
-            item = b.dot(color, 0.1 + 0.06 * abs(value))
-            item.opacity(to=0, duration=0)
-            item.opacity(to=1, duration=0.25, at=start + 1.35)
-
-            def returned(u, j=j, start=start, result=result):
-                q = ease((u * DURATION - start - 1.35) / 0.75)
-                source = np.array([1.8, 0.4 - j * 0.8])
-                pp = source + q * (result[j] - source)
-                return point(projected(pp[None, :], u)[0])
-
-            item.transform_function(returned, duration=DURATION, easing=Easing.LINEAR)
-        b.note(
-            f"第 {call + 1} 次调用",
-            0,
-            -2.7,
-            start=max(2.65, start) if call else 0,
-            end=start + 2.3,
-            color=color,
-        ) if call else None
-    return lambda: np.concatenate(parked)
+    return draw(b, incoming)
 
 
 def append(s, chapter, palette, kind, incoming=()):
