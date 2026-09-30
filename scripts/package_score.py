@@ -33,20 +33,29 @@ def loudness(ffmpeg, path):
     return json.loads(result.stderr[begin : end + 1])
 
 
-def page(chapters):
+def page(chapters, title="点还在动 · 声音草稿 01", credit=None):
+    title = html.escape(title)
+    attribution = ""
+    if credit:
+        attribution = (
+            f' · <a href="{html.escape(credit["source_url"], quote=True)}">'
+            f"钢琴采样：{html.escape(credit['author'])} / FreePats</a>"
+            f' · <a href="{html.escape(credit["license_url"], quote=True)}">'
+            f"{html.escape(credit['license'])}</a>"
+        )
     options = "".join(
         f'<option value="{c["start"]:.6f}">{html.escape(c["title"])}</option>'
         for c in chapters
     )
     return f"""<!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>点还在动 · 配乐试听 01</title>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{title}</title>
 <style>
 :root{{color-scheme:dark}}*{{box-sizing:border-box}}body{{margin:0;background:#000;color:#b8c7d1;font:14px/1.6 system-ui,sans-serif}}main{{max-width:1600px;margin:auto;padding:18px 24px}}header{{display:flex;align-items:baseline;justify-content:space-between;gap:12px}}h1{{font-size:17px;font-weight:450;letter-spacing:.1em}}small,footer{{color:#758491}}video{{display:block;width:100%;max-height:calc(100vh - 155px);background:#000}}nav{{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0;align-items:center}}button,select,a{{font:inherit;background:#080c0f;border:1px solid #26323b;border-radius:4px;padding:6px 12px;color:#a6b7c4;cursor:pointer;text-decoration:none}}button:hover,a:hover{{color:#58c4dd;border-color:#58c4dd}}footer{{font-size:12px;margin-top:16px}}.cinema header,.cinema nav,.cinema footer{{display:none}}.cinema main{{max-width:none;padding:0}}.cinema video{{height:100vh;max-height:100vh}}@media(max-width:600px){{main{{padding:10px}}header small{{display:none}}video{{max-height:none}}select{{width:100%}}}}
 </style></head><body><main>
-<header><h1>点还在动 · 声音草稿 01</h1><small>2 分钟 · 原创配乐试听</small></header>
+<header><h1>{title}</h1><small>2 分钟 · 原创配乐试听</small></header>
 <video id="film" controls playsinline preload="metadata" poster="poster.png" src="neural-choreography-score-preview.mp4"></video>
 <nav><button id="play">播放 / 暂停</button><select id="chapter" aria-label="章节">{options}</select><button id="mute" aria-pressed="false">对比静音</button><button id="cinema">纯享</button><a href="score.mp3">仅听配乐</a><a href="neural-choreography-score-preview.mp4" download>下载样片</a></nav>
-<footer>点击播放开启声音 · F 全屏 · Esc 退出纯享</footer>
+<footer>点击播放开启声音 · F 全屏 · Esc 退出纯享{attribution}</footer>
 </main><script>
 const film=document.getElementById('film'),chapter=document.getElementById('chapter'),mute=document.getElementById('mute');
 const marks=Array.from(chapter.options,o=>Number(o.value));
@@ -71,6 +80,14 @@ def main():
     args = parser.parse_args()
     out = args.output.resolve()
     score = json.loads((out / "score.json").read_text())
+    credit = score.get("sample_credits")
+    credit_text = (
+        f"Piano samples: {credit['work']} by {credit['author']}; "
+        f"SF2: {credit['sf2_conversion']}; {credit['license']}; "
+        f"{credit['source_url']}; {credit['license_url']}; {credit['use']}"
+        if credit
+        else "Original numerical instrument synthesis"
+    )
     duration = score["duration"]
     timeline = json.loads(args.timeline.read_text())
     chapters = [c for c in timeline["chapters"] if c["start"] < duration - 1e-6]
@@ -99,6 +116,8 @@ def main():
             "48000",
             "-c:a",
             "pcm_s24le",
+            "-metadata",
+            f"comment={credit_text}",
             str(wav),
         ]
     )
@@ -114,11 +133,23 @@ def main():
             "-b:a",
             "192k",
             "-metadata",
-            "title=点还在动 · 声音草稿 01",
+            f"title={score['title']}",
+            "-metadata",
+            f"comment={credit_text}",
             str(out / "score.mp3"),
         ]
     )
-    metadata = [";FFMETADATA1", "title=Neural Choreography — original score sketch 01"]
+
+    def metadata_value(value):
+        for character in ["\\", "=", ";", "#", "\n"]:
+            value = value.replace(character, "\\" + character)
+        return value
+
+    metadata = [
+        ";FFMETADATA1",
+        f"title={metadata_value(score['title'])}",
+        f"comment={metadata_value(credit_text)}",
+    ]
     for i, chapter in enumerate(chapters):
         end = chapters[i + 1]["start"] if i + 1 < len(chapters) else duration
         metadata += [
@@ -126,7 +157,7 @@ def main():
             "TIMEBASE=1/1000",
             f"START={round(chapter['start'] * 1000)}",
             f"END={round(end * 1000)}",
-            f"title={chapter['title']}",
+            f"title={metadata_value(chapter['title'])}",
         ]
     meta = out / "preview-chapters.ffmeta"
     meta.write_text("\n".join(metadata) + "\n")
@@ -244,7 +275,7 @@ def main():
         raise ValueError("Encoded soundtrack loudness/headroom check failed")
     poster = args.video.parent / "review/frame-04.png"
     shutil.copy2(poster, out / "poster.png")
-    (out / "index.html").write_text(page(chapters))
+    (out / "index.html").write_text(page(chapters, score["title"], credit))
     report = dict(
         status="listening_draft",
         duration=duration,
@@ -264,9 +295,15 @@ def main():
         original_video_pixel_comparisons=comparisons,
         loudness=measured,
         artistic_review="pending_listening",
+        sample_credits=credit,
         source_sha256={
             source.name: hashlib.sha256(source.read_bytes()).hexdigest()
-            for source in [Path(__file__), Path(__file__).with_name("compose_score.py")]
+            for source in [
+                Path(__file__),
+                Path(__file__).with_name(
+                    Path(score.get("composer_source", "compose_score.py")).name
+                ),
+            ]
         },
         original_video_sha256=hashlib.sha256(args.video.read_bytes()).hexdigest(),
         video_sha256=hashlib.sha256(video.read_bytes()).hexdigest(),

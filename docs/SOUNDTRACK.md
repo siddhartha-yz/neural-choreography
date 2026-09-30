@@ -2,7 +2,30 @@
 
 已发布的 `zanim-complete-v1` 是 49 段静音作品。用户希望继续完成此版本，并讨论专属配乐；现在先为现有画面写 0–120 秒的原创声音样片。音画反馈通过后再扩展整片，不能把工程检查当成音乐审听。
 
-## 草稿 01
+## 草稿 02 · 独奏钢琴夜曲
+
+用户反馈第一版不够好听，指定肖邦夜曲式的方向。第二版重新写作，采用独奏钢琴；主题与和声为原创，没有转录肖邦现有曲目。
+
+降 A 大调出发，中段转向 C 小调，采用 12/8 拍的低音与宽幅分解和弦。右手承担歌唱式旋律，局部加入倚音，主题重现时加入回音装饰。28 小节按 A–B–A′–尾声展开，手写的句尾延缓、中段推进与触键力度取代固定章节循环。左右手略有先后，踏板随和声更换；结尾让终止和弦自然释放。
+
+旋律、音符事件、踏板与节奏伸缩保存在 `score.json`；`nocturne.mid` 保存实际演奏时序，便于继续编辑或换用钢琴音源。两分钟试听完整覆盖原片开头十段，音乐乐句不强制卡在每个章节标题上。
+
+音源使用 Alexander Holm 的 [Salamander Grand Piano](https://freepats.zenvoid.org/Piano/acoustic-grand-piano.html)，本次采用 Roberto / FreePats 转换的 V3+20200602 SF2。采样作者和 CC BY 3.0 链接写入试听页、文件元数据与记录；原音库不修改，不提交到 Git。实际钢琴音色仍是采样渲染，此阶段没有真人钢琴演奏录音。
+
+安装 FluidSynth 共享库（本次 Linux 环境使用 `libfluidsynth.so.3`）与 `requirements-score.txt`。下载并解压 [SF2 音库](https://freepats.zenvoid.org/Piano/SalamanderGrandPiano/SalamanderGrandPiano-SF2-V3+20200602.tar.xz)，在仓库根目录运行：
+
+```bash
+python -m scripts.compose_nocturne \
+  --soundfont /absolute/path/SalamanderGrandPiano-V3+20200602.sf2 \
+  --output media/nocturne-study
+python -m scripts.package_score \
+  --video media/complete/video.mp4 \
+  --timeline media/complete/timeline.json --output media/nocturne-study
+```
+
+本地新样片：`../outputs/soundtrack-nocturne-v2/index.html`。原电子草稿和静音完整版均保留。响度、完整解码与原片像素对照仍由打包命令检查，夜曲风格及音乐审听等待实际反馈。
+
+## 草稿 01 · 历史电子版本
 
 主题为清澈、缓慢展开的电子室内乐：柔和键音承担旋律，持续弦音连接和声，短拨音建立脉动，高音玻璃质感提供少量声部回应。没有人声、旁白或外部录音；所有音源由数值合成生成，没有搬用参考项目的音乐或曲谱。
 
