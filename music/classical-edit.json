@@ -1,0 +1,107 @@
+{
+  "title": "Classical piano edition",
+  "recordings": [
+    {
+      "id": "beethoven",
+      "filename": "beethoven.ogg",
+      "title": "悲怆奏鸣曲 · II. Adagio cantabile, Op.13",
+      "composer": "Ludwig van Beethoven",
+      "performer": "Paul Pitman",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Beethoven,_Sonata_No._8_in_C_Minor_Pathetique,_Op._13_-_II._Adagio_cantabile.ogg",
+      "download_url": "https://upload.wikimedia.org/wikipedia/commons/6/63/Beethoven%2C_Sonata_No._8_in_C_Minor_Pathetique%2C_Op._13_-_II._Adagio_cantabile.ogg",
+      "license": "CC0 1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/"
+    },
+    {
+      "id": "valse",
+      "filename": "valse.mp3",
+      "title": "感伤圆舞曲 · Valse sentimentale, Op.51 No.6",
+      "composer": "Pyotr Ilyich Tchaikovsky",
+      "performer": "Luis Kolodin",
+      "source_url": "https://imslp.org/wiki/6_Pieces,_Op.51_(Tchaikovsky,_Pyotr)",
+      "download_url": "https://imslp.org/wiki/Special:ImagefromIndex/836971",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/"
+    },
+    {
+      "id": "satie",
+      "filename": "satie.mp3",
+      "title": "裸体舞曲 · Gymnopédie No.1",
+      "composer": "Erik Satie",
+      "performer": "Kevin MacLeod (incompetech.com)",
+      "source_url": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100787",
+      "download_url": "https://incompetech.com/music/royalty-free/mp3-royaltyfree/Gymnopedie%20No%201.mp3",
+      "license": "CC BY 4.0 (author’s current licensing page); also CC BY 3.0 on the Commons archive",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "license_evidence": "https://incompetech.com/music/royalty-free/licenses/",
+      "archive_source": "https://commons.wikimedia.org/wiki/File:Gymnopedie_No._1_(ISRC_USUAN1100787).mp3"
+    }
+  ],
+  "segments": [
+    {
+      "recording": "beethoven",
+      "source_start": 0,
+      "source_end": 298.2099166666667,
+      "start": 0,
+      "fade_in": 0.06,
+      "fade_out": 1.2
+    },
+    {
+      "recording": "valse",
+      "source_start": 0,
+      "source_end": 160.51,
+      "start": 298.55991666666665,
+      "fade_in": 0.06,
+      "fade_out": 0.23
+    },
+    {
+      "recording": "valse",
+      "source_start": 224.46,
+      "source_end": 259.18114583333335,
+      "start": 458.8399166666667,
+      "fade_in": 0.23,
+      "fade_out": 1.2
+    },
+    {
+      "recording": "satie",
+      "source_start": 0,
+      "source_end": 187.089,
+      "start": 493.96099999999996,
+      "fade_in": 0.06,
+      "fade_out": 1.5
+    }
+  ],
+  "silences": [
+    {
+      "start": 298.2099166666667,
+      "end": 298.55991666666665
+    },
+    {
+      "start": 493.5610625,
+      "end": 493.96099999999996
+    }
+  ],
+  "movements": [
+    {
+      "start": 0,
+      "title": "悲怆 · 第二乐章",
+      "key": "Beethoven / Paul Pitman"
+    },
+    {
+      "start": 298.55991666666665,
+      "title": "感伤圆舞曲",
+      "key": "Tchaikovsky / Luis Kolodin"
+    },
+    {
+      "start": 493.96099999999996,
+      "title": "裸体舞曲 · 第 1 首",
+      "key": "Satie / Kevin MacLeod"
+    }
+  ],
+  "notes": [
+    "Beethoven and Satie retain the full recording at original tempo, with endpoint fades.",
+    "One repeated passage in Valse sentimentale is removed; a 230 ms crossfade joins corresponding musical material.",
+    "The two explicit rests preserve space between the closing decay and the following piece.",
+    "User supplied the IMSLP file after completing the site verification. Its .mp3 filename contains AAC audio; FFmpeg decodes its actual content."
+  ]
+}

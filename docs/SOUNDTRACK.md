@@ -1,8 +1,41 @@
-# 点还在动 · 配乐草稿
+# 点还在动 · 配乐制作记录
 
-已发布的 `zanim-complete-v1` 是 49 段静音作品。在两分钟钢琴夜曲样片之后，用户要求将此方向扩展到整片，并明确要求调性与编排有差异。完整钢琴版覆盖相同的 681.05 秒画面，静音版和历史试听版均保留。工程检查不能代替音乐审听。
+全片为 681.05 秒、49 段连续动画。用户在原创夜曲版后改选三首较柔和的古典钢琴作品：贝多芬《悲怆》第二乐章、柴可夫斯基《感伤圆舞曲》与萨蒂《裸体舞曲》。当前版本使用现成录音，原静音版与原创配乐版本作为历史版本保留。工程检查不能代替音乐审听。
 
-## 钢琴夜曲完整版
+## 当前版本 · 三首古典钢琴录音
+
+| 影片时间 | 曲目 | 录音与使用方式 |
+| --- | --- | --- |
+| 0:00–4:58 | 贝多芬《悲怆奏鸣曲》Op.13，II. Adagio cantabile | Paul Pitman；完整演奏，首尾轻微淡入淡出 |
+| 4:59–8:14 | 柴可夫斯基《感伤圆舞曲》Op.51 No.6 | Luis Kolodin；删去一段重复，保留开头及尾声 |
+| 8:14–11:21 | 萨蒂《裸体舞曲》第 1 首 | Kevin MacLeod；完整演奏，尾音随片尾释放 |
+
+三首均保持原播放速度，没有伸缩音频或变调。圆舞曲在原录音 160.28 秒与 224.46 秒处衔接对应素材，用 230 ms 交叉淡化缩短重复段。贝多芬结束后留 350 ms 呼吸，圆舞曲后留约 400 ms。全部来源区间、位置与淡化长度保存在 [剪辑表](../music/classical-edit.json)。
+
+每段录音只做一次固定增益调整，再对整片进行母带响度处理：目标 −22 LUFS、真峰值 −2 dBTP、响度范围目标 12 LU。相比历史原创版的 −18 LUFS 更轻，避免把钢琴强弱压成始终相同的音量。最终 AAC 的实测值与解码检查保存在成品 `report.json` 中。
+
+录音来源及授权：
+
+- [Paul Pitman / Musopen《悲怆》第二乐章](https://commons.wikimedia.org/wiki/File:Beethoven,_Sonata_No._8_in_C_Minor_Pathetique,_Op._13_-_II._Adagio_cantabile.ogg)：CC0 1.0。
+- [Luis Kolodin《感伤圆舞曲》，IMSLP #836971](https://imslp.org/wiki/6_Pieces,_Op.51_(Tchaikovsky,_Pyotr))：CC BY-SA 4.0。用户完成网站验证后提供该文件；文件虽以 `.mp3` 命名，实际容器为 M4A、音轨为 AAC，按真实格式解码。
+- [Kevin MacLeod《Gymnopedie No 1》](https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100787)：作者[当前授权页面](https://incompetech.com/music/royalty-free/licenses/)提供 CC BY 4.0；[Commons 历史录音页](https://commons.wikimedia.org/wiki/File:Gymnopedie_No._1_(ISRC_USUAN1100787).mp3)另记 CC BY 3.0。本版附上曲名、Kevin MacLeod (incompetech.com)、CC BY 4.0 链接和修改说明。
+
+本次混音与配乐影片按 [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) 发布，保留三位录音制作者署名并注明剪辑、增益、淡化与画面同步等修改。仓库代码继续使用原 MIT 许可。`MUSIC-CREDITS.txt` 随播放器、混音 MP3、MP4 元数据和离线包提供；没有把录音误标为原创音乐。
+
+复现：按剪辑表中的正式下载链接取得三段录音，以 `beethoven.ogg`、`valse.mp3`、`satie.mp3` 保存到一个目录。遇到站点人机验证时由用户在浏览器完成，不尝试绕过。安装 `requirements-score.txt`，并准备 FFmpeg / ffprobe 后运行：
+
+```bash
+python -m scripts.mix_recordings \
+  --edit music/classical-edit.json --recordings /absolute/path/recordings \
+  --timeline media/complete/timeline.json --output media/classical-complete
+python -m scripts.package_score \
+  --video media/complete/video.mp4 --timeline media/complete/timeline.json \
+  --output media/classical-complete
+```
+
+本地：`../outputs/neural-choreography-classical-final/index.html`。远程：[古典钢琴版](https://github.com/siddhartha-yz/neural-choreography/releases/tag/classical-edition-v1)。音轨替换使用视频流复制；章节和 40,863 帧保持完整，并对照九处原版画面。播放器可分别定位三首曲目。
+
+## 历史版本 · 原创钢琴夜曲完整版
 
 179 小节、3245 个音符事件，仍为独奏钢琴。开场保留样片前 24 小节的演奏时序，将原样片的闭合尾声改写为转调连接。后续增加三个主题，并在六个调性区域之间展开，七个音乐段落有不同的伴奏密度、音区、力度与句法。
 

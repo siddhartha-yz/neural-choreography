@@ -14,22 +14,26 @@ def run(command):
     return subprocess.run(command, check=True, text=True, capture_output=True)
 
 
-def archive_piano(out, video_name="neural-choreography-piano.mp4"):
+def archive_piano(out, video_name="neural-choreography-piano.mp4", recorded=False):
     """Portable playback and score data; the large master WAV stays separate."""
     names = [
         "index.html",
         video_name,
         "poster.png",
         "score.mp3",
-        "nocturne.mid",
         "score.json",
         "report.json",
         "manifest.json",
         "timeline.json",
         "chapters.vtt",
-        "PIANO-SAMPLE-CREDITS.txt",
+        "MUSIC-CREDITS.txt" if recorded else "PIANO-SAMPLE-CREDITS.txt",
     ]
-    archive = out / "neural-choreography-piano-player.zip"
+    names.append("edit.json" if recorded else "nocturne.mid")
+    archive = out / (
+        "neural-choreography-classical-player.zip"
+        if recorded
+        else "neural-choreography-piano-player.zip"
+    )
     with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED, compresslevel=6) as bundle:
         for name in names:
             bundle.write(out / name, name)
@@ -39,7 +43,7 @@ def archive_piano(out, video_name="neural-choreography-piano.mp4"):
     return archive
 
 
-def loudness(ffmpeg, path):
+def loudness(ffmpeg, path, integrated=-18, peak=-1.5, dynamic_range=8):
     result = run(
         [
             ffmpeg,
@@ -48,7 +52,7 @@ def loudness(ffmpeg, path):
             "-i",
             str(path),
             "-af",
-            "loudnorm=I=-18:TP=-1.5:LRA=8:print_format=json",
+            f"loudnorm=I={integrated}:TP={peak}:LRA={dynamic_range}:print_format=json",
             "-f",
             "null",
             "-",
@@ -66,11 +70,18 @@ def page(
     duration=120,
     filename="neural-choreography-score-preview.mp4",
     movements=None,
+    recorded=False,
 ):
     title = html.escape(title)
     filename = html.escape(filename, quote=True)
     minutes, seconds = divmod(round(duration), 60)
-    edition = "钢琴夜曲完整版" if duration > 120 else "原创配乐试听"
+    edition = (
+        "古典钢琴配乐版"
+        if recorded
+        else "钢琴夜曲完整版"
+        if duration > 120
+        else "原创配乐试听"
+    )
     navigation = ""
     if movements:
         choices = "".join(
@@ -86,6 +97,12 @@ def page(
             f"钢琴采样：{html.escape(credit['author'])} / FreePats</a>"
             f' · <a href="{html.escape(credit["license_url"], quote=True)}">'
             f"{html.escape(credit['license'])}</a>"
+        )
+    if recorded:
+        attribution = (
+            ' · <a href="MUSIC-CREDITS.txt">录音来源与署名</a>'
+            ' · <a href="https://creativecommons.org/licenses/by-sa/4.0/">'
+            "本配乐影片：CC BY-SA 4.0</a>"
         )
     options = "".join(
         f'<option value="{c["start"]:.6f}">{html.escape(c["title"])}</option>'
@@ -127,16 +144,24 @@ def main():
     out = args.output.resolve()
     score = json.loads((out / "score.json").read_text())
     credit = score.get("sample_credits")
+    recorded = score["status"] == "complete_classical_edition"
     credit_text = (
-        f"Piano samples: {credit['work']} by {credit['author']}; "
-        f"SF2: {credit['sf2_conversion']}; {credit['license']}; "
-        f"{credit['source_url']}; {credit['license_url']}; {credit['use']}"
-        if credit
-        else "Original numerical instrument synthesis"
+        score["credits_text"]
+        if recorded
+        else (
+            f"Piano samples: {credit['work']} by {credit['author']}; "
+            f"SF2: {credit['sf2_conversion']}; {credit['license']}; "
+            f"{credit['source_url']}; {credit['license_url']}; {credit['use']}"
+            if credit
+            else "Original numerical instrument synthesis"
+        )
     )
     duration = score["duration"]
     timeline = json.loads(args.timeline.read_text())
-    complete = score["status"] == "complete_piano_edition"
+    complete = score["status"] in (
+        "complete_piano_edition",
+        "complete_classical_edition",
+    )
     if complete and (
         abs(duration - timeline["duration"]) > 1 / 48000
         or len(timeline["chapters"]) != 49
@@ -144,7 +169,8 @@ def main():
         raise ValueError("Complete score must match all 49 film chapters")
     chapters = [c for c in timeline["chapters"] if c["start"] < duration - 1e-6]
     raw = out / "score-unmastered.wav"
-    measurement = loudness(args.ffmpeg, raw)
+    target_i, target_peak, target_range = (-22, -2, 12) if recorded else (-18, -1.5, 8)
+    measurement = loudness(args.ffmpeg, raw, target_i, target_peak, target_range)
     values = {
         "measured_I": "input_i",
         "measured_TP": "input_tp",
@@ -152,7 +178,10 @@ def main():
         "measured_thresh": "input_thresh",
         "offset": "target_offset",
     }
-    norm = "loudnorm=I=-18:TP=-1.5:LRA=8:linear=true:print_format=json:"
+    norm = (
+        f"loudnorm=I={target_i}:TP={target_peak}:LRA={target_range}:"
+        "linear=true:print_format=json:"
+    )
     norm += ":".join(f"{key}={measurement[value]}" for key, value in values.items())
     wav = out / "score.wav"
     run(
@@ -214,9 +243,13 @@ def main():
     meta = out / "chapters.ffmeta"
     meta.write_text("\n".join(metadata) + "\n")
     video = out / (
-        "neural-choreography-piano.mp4"
-        if complete
-        else "neural-choreography-score-preview.mp4"
+        "neural-choreography-classical.mp4"
+        if recorded
+        else (
+            "neural-choreography-piano.mp4"
+            if complete
+            else "neural-choreography-score-preview.mp4"
+        )
     )
     run(
         [
@@ -329,8 +362,11 @@ def main():
         if not a or a != b:
             raise ValueError(f"Video pixels changed at {time}")
         comparisons.append(dict(time=time, sha256=hashlib.sha256(a).hexdigest()))
-    measured = loudness(args.ffmpeg, video)
-    if abs(float(measured["input_i"]) + 18) > 0.7 or float(measured["input_tp"]) > -1:
+    measured = loudness(args.ffmpeg, video, target_i, target_peak, target_range)
+    if (
+        abs(float(measured["input_i"]) - target_i) > 0.7
+        or float(measured["input_tp"]) > target_peak + 0.5
+    ):
         raise ValueError("Encoded soundtrack loudness/headroom check failed")
     poster = args.video.parent / "review/frame-04.png"
     shutil.copy2(poster, out / "poster.png")
@@ -342,6 +378,7 @@ def main():
             duration,
             video.name,
             score.get("movements"),
+            recorded,
         )
     )
     report = dict(
@@ -362,9 +399,17 @@ def main():
         full_decode="passed",
         original_video_pixel_comparisons=comparisons,
         loudness=measured,
+        mastering_targets=dict(
+            integrated_lufs=target_i,
+            true_peak_dbfs=target_peak,
+            loudness_range_lu=target_range,
+        ),
         artistic_review=score["artistic_review"],
         music_movements=score.get("movements", []),
         sample_credits=credit,
+        recording_credits=score.get("recordings", []),
+        edition_license=score.get("edition_license"),
+        music_checks=score.get("music_checks", {}),
         source_sha256={
             source.name: hashlib.sha256(source.read_bytes()).hexdigest()
             for source in [
@@ -374,7 +419,7 @@ def main():
                 ),
                 *(
                     [Path(__file__).with_name("compose_nocturne.py")]
-                    if complete
+                    if complete and not recorded
                     else []
                 ),
             ]
@@ -392,8 +437,9 @@ def main():
         )
         shutil.copy2(args.timeline, out / "timeline.json")
         shutil.copy2(args.video.parent / "chapters.vtt", out / "chapters.vtt")
-        (out / "PIANO-SAMPLE-CREDITS.txt").write_text(credit_text + "\n")
-        archive_piano(out, video.name)
+        credits_name = "MUSIC-CREDITS.txt" if recorded else "PIANO-SAMPLE-CREDITS.txt"
+        (out / credits_name).write_text(credit_text + "\n")
+        archive_piano(out, video.name, recorded)
     print(
         json.dumps(
             {
