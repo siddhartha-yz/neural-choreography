@@ -6,11 +6,37 @@ import html
 import json
 import shutil
 import subprocess
+import zipfile
 from pathlib import Path
 
 
 def run(command):
     return subprocess.run(command, check=True, text=True, capture_output=True)
+
+
+def archive_piano(out, video_name="neural-choreography-piano.mp4"):
+    """Portable playback and score data; the large master WAV stays separate."""
+    names = [
+        "index.html",
+        video_name,
+        "poster.png",
+        "score.mp3",
+        "nocturne.mid",
+        "score.json",
+        "report.json",
+        "manifest.json",
+        "timeline.json",
+        "chapters.vtt",
+        "PIANO-SAMPLE-CREDITS.txt",
+    ]
+    archive = out / "neural-choreography-piano-player.zip"
+    with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED, compresslevel=6) as bundle:
+        for name in names:
+            bundle.write(out / name, name)
+    with zipfile.ZipFile(archive) as bundle:
+        if bundle.testzip() is not None:
+            raise ValueError("Piano edition archive integrity failed")
+    return archive
 
 
 def loudness(ffmpeg, path):
@@ -33,8 +59,26 @@ def loudness(ffmpeg, path):
     return json.loads(result.stderr[begin : end + 1])
 
 
-def page(chapters, title="点还在动 · 声音草稿 01", credit=None):
+def page(
+    chapters,
+    title="点还在动 · 声音草稿 01",
+    credit=None,
+    duration=120,
+    filename="neural-choreography-score-preview.mp4",
+    movements=None,
+):
     title = html.escape(title)
+    filename = html.escape(filename, quote=True)
+    minutes, seconds = divmod(round(duration), 60)
+    edition = "钢琴夜曲完整版" if duration > 120 else "原创配乐试听"
+    navigation = ""
+    if movements:
+        choices = "".join(
+            f'<option value="{m["start"]:.6f}">{html.escape(m["title"])} · '
+            f"{html.escape(m['key'])}</option>"
+            for m in movements
+        )
+        navigation = f'<select id="movement" aria-label="音乐段落">{choices}</select>'
     attribution = ""
     if credit:
         attribution = (
@@ -52,9 +96,9 @@ def page(chapters, title="点还在动 · 声音草稿 01", credit=None):
 <style>
 :root{{color-scheme:dark}}*{{box-sizing:border-box}}body{{margin:0;background:#000;color:#b8c7d1;font:14px/1.6 system-ui,sans-serif}}main{{max-width:1600px;margin:auto;padding:18px 24px}}header{{display:flex;align-items:baseline;justify-content:space-between;gap:12px}}h1{{font-size:17px;font-weight:450;letter-spacing:.1em}}small,footer{{color:#758491}}video{{display:block;width:100%;max-height:calc(100vh - 155px);background:#000}}nav{{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0;align-items:center}}button,select,a{{font:inherit;background:#080c0f;border:1px solid #26323b;border-radius:4px;padding:6px 12px;color:#a6b7c4;cursor:pointer;text-decoration:none}}button:hover,a:hover{{color:#58c4dd;border-color:#58c4dd}}footer{{font-size:12px;margin-top:16px}}.cinema header,.cinema nav,.cinema footer{{display:none}}.cinema main{{max-width:none;padding:0}}.cinema video{{height:100vh;max-height:100vh}}@media(max-width:600px){{main{{padding:10px}}header small{{display:none}}video{{max-height:none}}select{{width:100%}}}}
 </style></head><body><main>
-<header><h1>{title}</h1><small>2 分钟 · 原创配乐试听</small></header>
-<video id="film" controls playsinline preload="metadata" poster="poster.png" src="neural-choreography-score-preview.mp4"></video>
-<nav><button id="play">播放 / 暂停</button><select id="chapter" aria-label="章节">{options}</select><button id="mute" aria-pressed="false">对比静音</button><button id="cinema">纯享</button><a href="score.mp3">仅听配乐</a><a href="neural-choreography-score-preview.mp4" download>下载样片</a></nav>
+<header><h1>{title}</h1><small>{minutes} 分 {seconds:02d} 秒 · {edition}</small></header>
+<video id="film" controls playsinline preload="metadata" poster="poster.png" src="{filename}"></video>
+<nav><button id="play">播放 / 暂停</button><select id="chapter" aria-label="章节">{options}</select>{navigation}<button id="mute" aria-pressed="false">对比静音</button><button id="cinema">纯享</button><a href="score.mp3">仅听配乐</a><a href="{filename}" download>下载视频</a></nav>
 <footer>点击播放开启声音 · F 全屏 · Esc 退出纯享{attribution}</footer>
 </main><script>
 const film=document.getElementById('film'),chapter=document.getElementById('chapter'),mute=document.getElementById('mute');
@@ -63,6 +107,8 @@ film.volume=.8;
 document.getElementById('play').onclick=()=>film.paused?film.play().catch(()=>{{}}):film.pause();
 chapter.onchange=()=>{{film.currentTime=Number(chapter.value);film.play().catch(()=>{{}});}};
 film.addEventListener('timeupdate',()=>{{let i=0;while(i+1<marks.length&&film.currentTime>=marks[i+1])i++;chapter.selectedIndex=i;}});
+const movement=document.getElementById('movement');
+if(movement){{const points=Array.from(movement.options,o=>Number(o.value));movement.onchange=()=>{{film.currentTime=Number(movement.value);film.play().catch(()=>{{}});}};film.addEventListener('timeupdate',()=>{{let i=0;while(i+1<points.length&&film.currentTime>=points[i+1])i++;movement.selectedIndex=i;}});}}
 mute.onclick=()=>{{film.muted=!film.muted;}};
 film.addEventListener('volumechange',()=>{{mute.textContent=film.muted?'恢复配乐':'对比静音';mute.setAttribute('aria-pressed',String(film.muted));}});
 document.getElementById('cinema').onclick=()=>document.body.classList.add('cinema');
@@ -90,6 +136,12 @@ def main():
     )
     duration = score["duration"]
     timeline = json.loads(args.timeline.read_text())
+    complete = score["status"] == "complete_piano_edition"
+    if complete and (
+        abs(duration - timeline["duration"]) > 1 / 48000
+        or len(timeline["chapters"]) != 49
+    ):
+        raise ValueError("Complete score must match all 49 film chapters")
     chapters = [c for c in timeline["chapters"] if c["start"] < duration - 1e-6]
     raw = out / "score-unmastered.wav"
     measurement = loudness(args.ffmpeg, raw)
@@ -159,9 +211,13 @@ def main():
             f"END={round(end * 1000)}",
             f"title={metadata_value(chapter['title'])}",
         ]
-    meta = out / "preview-chapters.ffmeta"
+    meta = out / "chapters.ffmeta"
     meta.write_text("\n".join(metadata) + "\n")
-    video = out / "neural-choreography-score-preview.mp4"
+    video = out / (
+        "neural-choreography-piano.mp4"
+        if complete
+        else "neural-choreography-score-preview.mp4"
+    )
     run(
         [
             args.ffmpeg,
@@ -238,11 +294,14 @@ def main():
         or len(info["chapters"]) != len(chapters)
         or abs(float(info["format"]["duration"]) - duration) > 1 / 60
     ):
-        raise ValueError("Preview media metadata check failed")
+        raise ValueError("Scored film media metadata check failed")
 
-    # Compare decoded frames at three representative times with the silent film.
+    # Check late movements and the closing aperture as well as the intro.
     comparisons = []
-    for time in [17.0, 27.8, 107.0]:
+    times = [17.0, 27.8, 107.0]
+    if complete:
+        times += [250.75, 398.25, 524.65, 604.65, 675.0, duration - 1 / 60]
+    for time in times:
 
         def pixels(path):
             return subprocess.run(
@@ -275,9 +334,18 @@ def main():
         raise ValueError("Encoded soundtrack loudness/headroom check failed")
     poster = args.video.parent / "review/frame-04.png"
     shutil.copy2(poster, out / "poster.png")
-    (out / "index.html").write_text(page(chapters, score["title"], credit))
+    (out / "index.html").write_text(
+        page(
+            chapters,
+            score["title"],
+            credit,
+            duration,
+            video.name,
+            score.get("movements"),
+        )
+    )
     report = dict(
-        status="listening_draft",
+        status=score["status"],
         duration=duration,
         audio=audio,
         video={
@@ -294,7 +362,8 @@ def main():
         full_decode="passed",
         original_video_pixel_comparisons=comparisons,
         loudness=measured,
-        artistic_review="pending_listening",
+        artistic_review=score["artistic_review"],
+        music_movements=score.get("movements", []),
         sample_credits=credit,
         source_sha256={
             source.name: hashlib.sha256(source.read_bytes()).hexdigest()
@@ -302,6 +371,11 @@ def main():
                 Path(__file__),
                 Path(__file__).with_name(
                     Path(score.get("composer_source", "compose_score.py")).name
+                ),
+                *(
+                    [Path(__file__).with_name("compose_nocturne.py")]
+                    if complete
+                    else []
                 ),
             ]
         },
@@ -312,6 +386,14 @@ def main():
     (out / "report.json").write_text(
         json.dumps(report, ensure_ascii=False, indent=2) + "\n"
     )
+    if complete:
+        (out / "manifest.json").write_text(
+            json.dumps(report, ensure_ascii=False, indent=2) + "\n"
+        )
+        shutil.copy2(args.timeline, out / "timeline.json")
+        shutil.copy2(args.video.parent / "chapters.vtt", out / "chapters.vtt")
+        (out / "PIANO-SAMPLE-CREDITS.txt").write_text(credit_text + "\n")
+        archive_piano(out, video.name)
     print(
         json.dumps(
             {

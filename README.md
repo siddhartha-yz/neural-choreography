@@ -2,16 +2,19 @@
 
 一部以神经网络的状态传递、几何形变与群体运动编排的连续动画作品。内容参考《动手学深度学习》，以黑底、克制配色、清晰连接与多层运动表达结构，保留中文主题、章节编号和一句极简提示。
 
-**Zanim 完整版：49 段，11 分 21 秒，1920×1080，60 fps，H.264，静音。** 第 3–15 章按教材顺序连续播放，覆盖原目录全部选定机制。播放页提供章节定位、全屏、纯享与整片下载；MP4 内也写入 49 个章节。
+**Zanim 完整版：49 段，11 分 21 秒，1920×1080，60 fps，H.264。** 第 3–15 章按教材顺序连续播放，覆盖原目录全部选定机制。现提供原创独奏钢琴夜曲配乐版，并保留静音版。MP4 内写入 49 个章节。
 
-- [下载整片与离线播放器](https://github.com/siddhartha-yz/neural-choreography/releases/tag/zanim-complete-v1)
+- [下载钢琴夜曲版与离线播放器](https://github.com/siddhartha-yz/neural-choreography/releases/tag/piano-edition-v1)
+- [下载原静音版](https://github.com/siddhartha-yz/neural-choreography/releases/tag/zanim-complete-v1)
 - [完整目录](CATALOG.md)
 - [时间线、机制与制作记录](docs/CONTINUOUS_STUDY.md)
 - [创作约定](docs/CREATIVE_PRINCIPLES.md)
-- [原创钢琴夜曲试听与复现](docs/SOUNDTRACK.md)：两分钟音画草稿，已发布的静音整片保留。
+- [钢琴夜曲的编排、采样来源与复现](docs/SOUNDTRACK.md)
 - [第 23 版三十段制作记录](docs/archive/CONTINUOUS_STUDY_V23.md)
 
 本版保留已有连续片段，补齐注意力、优化器、计算机视觉与语言后段。Softmax 明确展示三个正响应共同除以总量、总长收为一；多层感知机采用 2→4→2 全连接图，信号汇入、ReLU 归零和再分发都发生在连接结构上。片尾收束到与开场呼应的粒子环。
+
+钢琴配乐有七个段落，经过降 A、降 D、F 小调、降 E、C 小调与 E 大调，用新主题、不同伴奏与力度形成展开和高潮，片尾回到开场调性。播放器提供画面章节和音乐段落两种定位、静音对比、全屏与纯享；音乐为原创，钢琴采样署名保留在文件和离线包中。
 
 完整范围、数学检查、导出通过与艺术认可分别记录。新增片段不因工程验证通过而自动标为人工过审。第 22 版的 04.4–04.6 已获用户认可；早期单集人工过审状态保留在目录中。
 

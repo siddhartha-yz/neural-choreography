@@ -408,7 +408,7 @@ class Piano:
                 raise RuntimeError("Piano preset 0 missing in SoundFont")
             self.lib.fluid_synth_cc(self.synth, hand, 10, 61 if hand == 0 else 67)
 
-    def render(self, notes, pedals):
+    def render(self, notes, pedals, duration=DURATION):
         events = []
         for note in notes:
             channel, pitch = note["hand"], note["midi"]
@@ -425,7 +425,7 @@ class Piano:
             (round(p["time"] * SR), 1, "cc", (p["hand"], 64, p["value"]))
             for p in pedals
         ]
-        n = round(DURATION * SR)
+        n = round(duration * SR)
         events.append((n, 3, None, ()))
         audio = np.zeros((n, 2), dtype=np.float32)
         position = 0
